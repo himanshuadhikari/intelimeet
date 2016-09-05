@@ -1,0 +1,21 @@
+<chanters-login>
+    <template>
+        <link rel="stylesheet" type="text/css" href="style/login.css">
+        <div class="container-fluid child-container" style="display: {{display}}">
+            <div class="login-wrap border light-div box-shadow-inset">
+                <div class="dark-div btm-border">
+                    <button class="form-text btn-login txt-shadow" on-click="{{goToPlayer}}" style="pointer:cursor">
+                        Login
+                    </button>
+                </div>
+                <div class="form-wrap btm-border">
+                    <input type="email" value="{{email}}" autofocus class="form-text email" placeholder="Email address">
+                </div>
+                <div class="form-wrap">
+                    <input type="text" value="{{userName}}" placeholder="User Name" class="form-text password">
+                </div>
+            </div>
+        </div>
+    </template>
+    <script src="scripts/helpers/chanters-login.js"></script>
+</chanters-login>

@@ -1,0 +1,22 @@
+<chanters-player>
+    <template>
+        <link rel="stylesheet" type="text/css" href="style/player.css">
+        <div style="position:relative">
+            <div id="welcome"></div>
+            <div class="fileupload {{visibility}} fixed" style="left:{{left}};top: {{top}}">
+                <span class="txt-shadow btn-menu" id="_fileupload" on-click="{{createList}}">Click Me</span>
+                <input autocomplete="" type="file" id="fileupload" multiple class="hidden">
+            </div>
+            <div id="title"> <span>Chanters</span>
+            </div>
+            <div id="search" class="border light-div box-shadow-inset" style="display: {{searchMode}}">
+                <input type="text" on-blur="{{attachEvent}}" on-input="{{filterSeach}}" class="form-text" placeholder="Filter Songs...">
+            </div>
+            <ul id="songList" class="border box-shadow-inset">
+            </ul>
+            <video id="videoPlayer" style="visibility: {{videoMode}};" controls></video>
+            <canvas id="analyser"></canvas>
+        </div>
+    </template>
+    <script src="scripts/helpers/chanters-player.js"></script>
+</chanters-player>
