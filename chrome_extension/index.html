@@ -20,8 +20,13 @@
                         <div id="bar2"></div>
                         <div id="bar3"></div>
                         <div id="bar4"></div>
-                    </div>
-                    {{mode}}
+                    </div>{{mode}}
+                    <span>{{user.name}}</span>
+                    <span>{{user.name}}</span>
+                    <span>{{user.designation}}</span>
+                    <span>{{roles.0.role}}</span>
+                    <span>{{roles.0.role}}</span>
+                    <span>{{roles.1}}</span>
                     <span id="currentTime" style="position:absolute;left:19%;padding: 12px 14px;">{{startTime}}</span>
                     <span id="totalTime" style="position:absolute;left:25%;padding: 12px 14px;">{{endTime}}</span>
                     <div class="logout">
@@ -29,6 +34,7 @@
                     </div>
                     <input type="range" id="seek" min="0" max="100" value="0" style="width:85%;margin-top: 38px;display:none">
                 </div>
+                <input type="text" value="{{mode}}" on-focus="{{changeMode}}"/>
             </template>
             <script src="scripts/helpers/chanters-header.js"></script>
         </chanters-header>
