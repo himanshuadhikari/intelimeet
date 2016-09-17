@@ -1,39 +1,19 @@
 <html>
+
 <head>
-    <title></title>
+    <title>Final Version</title>
     <link rel="stylesheet" type="text/css" href="style/chanters.css">
     <link rel="stylesheet" type="text/css" href="style/logo.css">
     <link rel="stylesheet" type="text/css" href="style/media.css">
     <script src="scripts/chanters.js"></script>
+    <!-- <script src="scripts/refactor.js"></script> -->
     <script src="scripts/background.js"></script>
+    <link rel="import" href="views/testing.html">
 </head>
 
 <body>
     <div class="wrapper-fluid">
-        <chanters-header>
-            <template>
-                <div id="header" class="header btm-border dark-div fixed-top">
-                    <div id="logo" class="border">
-                        <template repeat="bar in bars">
-                            <div id="{{bar}}"></div>
-                        </template>
-                    </div>
-                    <span>{{bars.0}}</span>
-                    <span>{{roles.1}}</span>
-                    <span>{{roles.0.role}}</span>
-                    <span id="currentTime" class="{{darkDiv}}" style="position:absolute;left:19%;padding: 12px 14px;color:{{color}};font-size: {{fontSize}}px">{{startTime}}</span>
-                    <span id="totalTime" style="position:absolute;left:25%;padding: 12px 14px;">{{endTime}}</span>
-                    <div class="logout">
-                        <button class="txt-shadow btn-menu" on-click="{{changeMode}}" id="mode">{{mode}} {{endTime}}</button>
-                    </div>
-                </div>
-                <input type="text" value="{{bars.0}}" style="position: fixed;top: 200px" on-focus="{{changeMode}}" />
-                <input type="text" value="{{roles.0.role}}" style="position: fixed;top: 50px" on-focus="{{changeMode}}" />
-                <input type="text" value="{{roles.1}}" style="position: fixed;top: 100px" on-focus="{{changeMode}}" />
-                <input type="text" value="{{roles.1}}" style="position: fixed;top: 150px" />
-            </template>
-            <script src="scripts/helpers/chanters-header.js"></script>
-        </chanters-header>
+        <chanters-header></chanters-header>
     </div>
 </body>
 

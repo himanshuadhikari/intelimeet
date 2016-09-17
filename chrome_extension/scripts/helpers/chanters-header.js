@@ -1,6 +1,5 @@
 Chanters("chanters-header", {
     changeMode: function() {
-        console.log("changeMode called");
         this.user.name = "Super Hero";
         this.roles[1] = "No Work";
     },

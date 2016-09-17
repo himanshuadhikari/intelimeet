@@ -191,10 +191,25 @@
 
 
     Chanters.init = function(name, prototype) {
-        var node = document.querySelector(name);
+        var node = document.currentScript.parentNode;
+        var content = node.querySelector("template").content;
         var webComponent = new WebComponent(node, prototype);
-        node.parentNode.replaceChild(webComponent, node);
-        webComponent.onReady();
+        // node.parentNode.replaceChild(webComponent, node);
+
+        var XFooProto = Object.create(HTMLElement.prototype, {
+            createdCallback: {
+                value: function() {
+                    var clone = document.importNode(webComponent, true);
+                    this.createShadowRoot().appendChild(clone);
+                }
+            }
+        });
+        XFooProto.mode = "day mode";
+
+
+        var XFoo = document.registerElement(name, { prototype: XFooProto });
+
+        // webComponent.onReady();
     }
 
 
@@ -470,9 +485,9 @@
             observer.__destroy__();
 
 
-        })(this.node);
+        })(this.content);
 
-        return this.node;
+        return this.content;
     }
 
 
@@ -480,7 +495,9 @@
         this.node = createHTMLElement(getNodeName(node));
 
         var template = node.querySelector("template");
-        this.node.appendChild(document.importNode(template.content, true));
+        this.content = document.importNode(template.content, true);
+        this.content.prototype = proto;
+        // this.node.appendChild(this.content);
         this.node.prototype = proto;
     }
 
