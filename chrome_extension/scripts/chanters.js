@@ -242,10 +242,26 @@
                 webComponent = this.webComponent,
                 templateInstance = n.bindingObject.targetNodes;
 
+
+
             forEach(_keys, function(key, i) {
-                var check = _checkValuesFromKeys(webComponent, key, that.mapper);
+                var _key = key;
+
+                if (n.bindingObject.bindingType === "reapeater") {
+                    if (n.bindingObject.repeatKey === key)
+                        _key = n.bindingObject.cloneParentKey;
+                    else if (key.indexOf(".") !== -1 && n.bindingObject.repeatKey === key.split(".")[0])
+                        _key = key.replace(n.bindingObject.repeatKey, n.bindingObject.cloneParentKey);
+
+                    obj = n.bindingObject.reapeater[_key];
+
+                    if (!obj)
+                        return;
+                }
+
+                var check = _checkValuesFromKeys(webComponent, _key, that.mapper);
                 if (check)
-                    that.__defineProperty__(obj, key, clone, templateInstance);
+                    that.__defineProperty__(obj, _key, clone, templateInstance);
             });
         } else if (n.bindingObject.Event && n.nodeName === "INPUT") {
             var obj = n.bindingObject.Event.filter(function(item) {
@@ -306,7 +322,7 @@
                 if (mapper[k] && i === a.length - 1)
                     return false;
 
-                if (isString(o[k]))
+                if (isString(o[k]) || isNumber(o[k]))
                     mapper[k] = true;
 
 
@@ -330,7 +346,10 @@
     Observers.prototype.__defineProperty__ = function(tag, key, clone, templateInstance) {
         key = key.split(".").pop();
         var that = this;
+        console.log("==============================");
         console.log(key);
+        console.log(tag[key])
+        console.log("==============================");
         Object.defineProperty(tag, key, {
             get: function() {
                 // console.log("get", key);
@@ -373,10 +392,18 @@
                 raw = bindingObject.Attribute[item.node.index].raw;
             }
 
+
             var values = [];
             forEach(_keys, function(key, i) {
+                var _key = key;
+                if (item.bindingObject && item.bindingObject.bindingType === "reapeater") {
+                    if (item.bindingObject.repeatKey === key)
+                        _key = item.bindingObject.cloneParentKey;
+                    else if (key.indexOf(".") !== -1 && item.bindingObject.repeatKey === key.split(".")[0])
+                        _key = key.replace(item.bindingObject.repeatKey, item.bindingObject.cloneParentKey);
+                }
 
-                var value = byString(webComponent, key);
+                var value = byString(webComponent, _key);
                 values.push(value);
             });
 
@@ -753,8 +780,8 @@
     }
 
     Getters.prototype.__Getter__TextNodes = function(n, webComponent) {
-        if (n.processedNode)
-            debugger;
+        // if (n.processedNode)
+        //     debugger;
 
         var o = n.bindingObject;
         var keys = getBindingVariables(n.textContent);
@@ -808,7 +835,10 @@
         prototype = o.prototype;
 
         if (bindingObject && bindingObject.bindingType === "reapeater") {
-            s = bindingObject.cloneParentKey;
+            if (bindingObject.repeatKey === s)
+                s = bindingObject.cloneParentKey;
+            else if (s.indexOf(".") !== -1 && bindingObject.repeatKey === s.split(".")[0])
+                s = s.replace(bindingObject.repeatKey, bindingObject.cloneParentKey);
         }
 
 
@@ -828,6 +858,12 @@
                     bindingObject.obj = o;
                     bindingObject.cloneObject = prototype;
                     bindingObject.targetNodes = templateInstance;
+                    if (bindingObject.bindingType === "reapeater") {
+                        if (!bindingObject.reapeater)
+                            bindingObject.reapeater = {};
+                        bindingObject.reapeater[s] = o;
+                    }
+
                     __mapNodes__(node, bindingObject, templateInstance, k);
                 }
 

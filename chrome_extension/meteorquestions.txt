@@ -1,0 +1,13 @@
+Q1. Challenges faced in Meteor as compared to other framework.
+Q2. How can you stop notifying Client in case when DB is updated.
+Q3. How you have bind React with Meteor or have used Meteor inside React.
+Q4. React Js Component Life cycle methods.
+Q5. When state is updated what all life cycle methods are called.
+Q6. Nodejs Project Details
+Q7. how you used meteor with react to display data on components.
+Q8. Meteor Guide details .
+
+
+ <template repeat="order in orders">
+                            <div id="{{order.name}}"></div>
+                        </template>

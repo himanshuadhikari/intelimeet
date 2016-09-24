@@ -1,4 +1,5 @@
 <html>
+
 <head>
     <title></title>
     <link rel="stylesheet" type="text/css" href="style/chanters.css">
@@ -13,7 +14,7 @@
         <chanters-header>
             <template>
                 <div id="header" class="header btm-border dark-div fixed-top">
-                    <div id="logo" class="border">
+                    <!-- <div id="logo" class="border">
                         <template repeat="bar in bars">
                             <div id="{{bar}}"></div>
                         </template>
@@ -25,12 +26,22 @@
                     <span id="totalTime" style="position:absolute;left:25%;padding: 12px 14px;">{{endTime}}</span>
                     <div class="logout">
                         <button class="txt-shadow btn-menu" on-click="{{changeMode}}" id="mode">{{mode}} {{endTime}}</button>
-                    </div>
+                    </div> -->
                 </div>
-                <input type="text" value="{{bars.0}}" style="position: fixed;top: 200px" on-focus="{{changeMode}}" />
+                <!-- <input type="text" value="{{bars.0}}" style="position: fixed;top: 200px" on-focus="{{changeMode}}" />
                 <input type="text" value="{{roles.0.role}}" style="position: fixed;top: 50px" on-focus="{{changeMode}}" />
                 <input type="text" value="{{roles.1}}" style="position: fixed;top: 100px" on-focus="{{changeMode}}" />
                 <input type="text" value="{{roles.1}}" style="position: fixed;top: 150px" />
+                <ul style="position: fixed; top: 250px; color: {{color}}"> -->
+                <!--  <template repeat="bar in bars">
+                    <div>{{bar}}</div>
+                </template> -->
+                <input type="text" style="position: fixed;top: 200px" on-focus="{{changeMode}}" value="{{orders.0.name}}" />
+                <ul style="position: fixed; top: 250px; color: {{color}}">
+                    <template repeat="order in orders">
+                        <li>{{order.name}}{{order.age}}</li>
+                    </template>
+                </ul>
             </template>
             <script src="scripts/helpers/chanters-header.js"></script>
         </chanters-header>
