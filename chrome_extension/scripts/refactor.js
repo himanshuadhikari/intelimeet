@@ -18,6 +18,62 @@
 })(window, document, undefined, function() {
 
 
+    var ChantersConstants = function(key) {
+        var chantersConstants = {
+            AttributeObect: {
+                "Attribute": {
+                    bindingType: "Attribute",
+                    raw: "HTMLNode Attribute AttributeValue eg style: color:{{color}}, size:{{size}}  //or// class : dark-div {{hidden}}",
+                    keys: new Array(),
+                    values: new Array(),
+                    attributeName: "AttributeName eg Style/Class"
+                },
+                "Event": {
+                    bindingType: "Event",
+                    raw: "HTMLNode Attribute name in which on-click/on-input or on-event name found",
+                    functionBody: "contains function which from webComponent prototype, always first level",
+                    eventName: "on-EventType"
+                }
+
+            },
+            TextObect: {
+                bindingType: "TextContent",
+                raw: "HTMLNode textContent eg hello my name is {{user.name}} or color",
+                keys: new Array(),
+                values: new Array()
+            },
+            "EventObject": {
+                bindingType: "Event",
+                raw: "HTMLNode Attribute name in which on-click/on-input or on-event name found",
+                functionBody: "contains function which from webComponent prototype, always first level",
+                eventName: "on-EventType"
+            },
+            "repeaterObject": {
+                parsingLevel: {
+                    bindingType: "Repeater",
+                    raw: "HTMLNode Attribute Value eg repeat = [[order in orders]] or friend in user.friendList",
+                    nextSibling: "template tag nextSibling",
+                    parentNode: "template tag parentNode",
+                    targetArray: new Array(),
+                    cloneTargetArray: new Array(),
+                    template: "orginal template for binding",
+                    templateClone: "create a clone from orginal template"
+                },
+                childLevel: {
+                    bindingType: "ReaterChild",
+                    processedNode: "either true or undefined",
+                    index: "index of currently repeating array",
+                    item: "object on which bingding is done",
+                    clone: "clone object for defineProperty",
+                    bindingObject: "object contains information of top level repeater on which we are iterating i.e parsingLevel",
+                }
+            }
+
+        }
+
+        return chantersConstants[key];
+    };
+
     /**
      * core functions
      */
@@ -117,6 +173,9 @@
     function setBindingVariables(textContent, from, With) {
         var str = textContent;
         for (var i = 0; i < from.length; i++) {
+            if (isObject(With[i])) // if try to print object
+                With[i] = JSON.stringify(With[i]);
+
             str = str.replace(new RegExp('{{' + from[i] + '}}', 'gi'), With[i]);
         }
 
@@ -124,7 +183,7 @@
     }
 
     function addEventListener(n, eventName, callback) {
-        n.addEventListener(eventName, callback);
+        n.addEventListener(eventName, callback, true);
     }
 
     function createHTMLElement(tagName) {
@@ -181,13 +240,31 @@
     Chanters.init = function(name, prototype) {
         var node = document.currentScript.parentNode;
 
-        var webComponent = new WebComponent(node, prototype);
+
         // console.log(webComponent.templateInstance);
 
-        // node.parentNode.replaceChild(webComponent, node);
-        debugger;
-        if (webComponent.onReady)
-            webComponent.onReady();
+
+        var XFooProto = Object.create(HTMLElement.prototype, {
+            createdCallback: {
+                value: function() {
+                    var content = node.querySelector("template").content;
+                    var clone = document.importNode(content, true);
+                    this.createShadowRoot().appendChild(clone);
+                    var webComponent = new WebComponent(this, prototype);
+                }
+            }
+        });
+
+
+        XFooProto.mode = "day mode";
+        XFooProto.player = "my player";
+        // XFooProto.templateInstance = webComponent.templateInstance;
+
+
+        var XFoo = document.registerElement(name, { prototype: XFooProto });
+
+        // if (webComponent.onReady)
+        //     webComponent.onReady();
     }
 
 
@@ -230,7 +307,154 @@
     // means if a div have 
 
     Observers.prototype.__observe__ = function(n, nodeObject) {
-        console.log(n, nodeObject);
+        var that = this,
+            webComponent = this.webComponent;
+
+        // if (n.processedNode)
+        //     debugger;
+
+        // for first level DOM nodes
+        if (nodeObject.Attribute) {
+            nodeObject.Attribute.forEach(function(item) {
+                var _keys = item.keys;
+                var templateInstance = nodeObject.targetNodes;
+                var clone = nodeObject.clone;
+                var obj = nodeObject.obj;
+
+                if (!templateInstance)
+                    return;
+
+                forLoop(_keys, function(key, i) {
+                    var check = utils.__checkValuesFromKeys__(webComponent, key, that.mapper);
+                    if (check) {
+                        that.__defineProperty__(obj, key, clone, templateInstance);
+                    }
+
+                });
+            });
+
+        } else if (nodeObject.TextContent) {
+            nodeObject.TextContent.forEach(function(item) {
+                var _keys = item.keys;
+                var templateInstance = nodeObject.targetNodes;
+                var clone = nodeObject.clone;
+                var obj = nodeObject.obj;
+
+                if (!templateInstance)
+                    return;
+
+                forLoop(_keys, function(key, i) {
+                    var check = utils.__checkValuesFromKeys__(webComponent, key, that.mapper);
+                    if (check) {
+                        that.__defineProperty__(obj, key, clone, templateInstance, webComponent);
+                    }
+
+                });
+            });
+        }
+
+
+    }
+
+
+    Observers.prototype.__defineProperty__ = function(tags, key, clones, templateInstance, webComponent) {
+        var that = this;
+        key = key.split(".").pop();
+
+        var tag = tags[key];
+        var clone = clones[key];
+
+        Object.defineProperty(tag, key, {
+            get: function() {
+                console.log("get", key);
+                return clone[key];
+            },
+            set: function(val) {
+                var change = that.__apply__(clone, key, val);
+                if (!change)
+                    return;
+                // console.log(webComponent.templateInstance, templateInstance);
+                // debugger;
+                change.templateInstance = templateInstance;
+                clone[key] = val;
+
+
+                that.__digest__(change);
+
+            },
+            enumerable: true
+        });
+    };
+
+    Observers.prototype.__apply__ = function(clone, key, value) {
+        var newValue = value;
+        var oldValue = clone[key];
+
+        if (oldValue !== newValue) {
+            return {
+                name: key,
+                newValue: newValue,
+                oldValue: oldValue,
+                type: "updated"
+            }
+        }
+    }
+
+    Observers.prototype.__digest__ = function(change) {
+        if (!change.templateInstance)
+            return;
+
+        var webComponent = this.webComponent;
+        that = this;
+
+        change.templateInstance.forEach(function(item) {
+            var node = item.node;
+
+            if (node === webComponent.target)
+                return;
+
+            // var bindingObject = item.bindingObject.textContent ? item.bindingObject.textContent[0] : item.bindingObject;
+
+            var bindingObject = item.bindingObject;
+
+            if (bindingObject.Attribute) {
+                that.__ObserveAttibuteChanges__(change, bindingObject.Attribute, node);
+            } else if (bindingObject.TextContent) {
+                that.__ObserveTextChanges__(change, bindingObject.TextContent, node);
+            }
+
+
+        })
+
+        delete webComponent.target;
+    }
+
+    Observers.prototype.__ObserveAttibuteChanges__ = function(change, bindingObject, node) {
+        bindingObject.forEach(function(item) {
+            var effectedPropertyName = change.name;
+
+            item.keys.forEach(function(key, index) {
+                key = key.split(".").pop();
+                if (key === effectedPropertyName)
+                    item.values[index] = change.newValue;
+            })
+
+            Setters.prototype.__Setter__Attribute(node, item);
+        })
+    }
+
+    Observers.prototype.__ObserveTextChanges__ = function(change, bindingObject, node) {
+        bindingObject.forEach(function(item) {
+            var effectedPropertyName = change.name;
+
+            item.keys.forEach(function(key, index) {
+                key = key.split(".").pop();
+                if (key === effectedPropertyName)
+                    item.values[index] = change.newValue;
+            })
+
+            Setters.prototype.__SetterTextNodes__(node, item);
+        })
     }
 
     /**
@@ -244,14 +468,19 @@
 
     function WebComponent(webComponent, prototype) {
         this.initializeComponent(webComponent, prototype);
+        var that = this;
 
         (function(webComponent) {
             var observer = new Observers(webComponent, prototype);
 
             webComponent.templateInstance = new Object();
 
-            walkNodes(webComponent, function(n) {
+            walkNodes(webComponent.shadowRoot, function(n) {
                 var nodeObject = new Object();
+
+                if (n.processedNode) {
+                    nodeObject.parsingLevel = WebComponent.templateObject;
+                }
 
                 new Getters(n, nodeObject, webComponent, prototype);
 
@@ -265,18 +494,23 @@
             // observer.__destroy__();
 
 
-        })(this.node);
+        })(this.content);
 
-        return this.node;
+        return this.content;
     }
 
+    WebComponent.templateObject = {};
 
-    WebComponent.prototype.initializeComponent = function(node, proto) {
-        var template = node.querySelector("template");
-        if (!template) return;
 
-        this.node = createHTMLElement(getNodeName(node));
-        this.node.appendChild(document.importNode(template.content, true));
+    WebComponent.prototype.initializeComponent = function(webComponent, proto) {
+        // var template = node.querySelector("template");
+        // this.node = createHTMLElement(getNodeName(node));
+
+        // if (!template) return;
+
+        this.content = webComponent;
+        // this.content.prototype = proto;
+        // this.node.prototype = proto;
     }
 
 
@@ -301,22 +535,57 @@
 
     Setters.prototype.__Init__ = function(n, nodeObject) {
         var that = this;
-
         forLoop(nodeObject, function(bindingType, item) {
             if (isArray(item))
                 forLoop(item, function(bindingObject) {
                     if (bindingType === "TextContent")
                         that.__SetterTextNodes__(n, bindingObject);
+                    if (bindingType === "Attribute")
+                        that.__Setter__Attribute(n, bindingObject);
+                    if (bindingType === "Event")
+                        that.__Setter__Events(n, bindingObject);
+                    if (bindingType === "Repeater")
+                        that.__Setter__Repeaters(n, bindingObject);
                 });
         })
 
     }
 
+    Setters.prototype.__Setter__Repeaters = function(n, bindingObject) {
+
+        forLoop(bindingObject.targetArray, function(item, index) {
+            var instance = document.importNode(bindingObject.templateClone.content, true);
+
+            (function(instance) {
+                walkNodes(instance, function(n) {
+                    n.processedNode = true;
+                    n.keyFromTop = bindingObject.targetArrayName + "." + index;
+                    n.index = index;
+                });
+                bindingObject.parentNode.insertBefore(instance, bindingObject.nextSibling);
+            })(instance);
+        });
+        WebComponent.templateObject = bindingObject;
+    };
+
     Setters.prototype.__SetterTextNodes__ = function(n, bindingObject) {
         var _from = bindingObject.keys,
             _with = bindingObject.values;
 
-        n.textContent = setBindingVariables(n.textContent, _from, _with);
+        n.textContent = setBindingVariables(bindingObject.raw, _from, _with);
+    };
+
+    Setters.prototype.__Setter__Attribute = function(n, bindingObject) {
+        var _from = bindingObject.keys,
+            _with = bindingObject.values;
+
+        var value = setBindingVariables(bindingObject.raw, _from, _with);
+        n.setAttribute(bindingObject.attributeName, value);
+    };
+
+    Setters.prototype.__Setter__Events = function(n, bindingObject) {
+        if (bindingObject.functionBody)
+            addEventListener(n, bindingObject.eventName, bindingObject.functionBody);
     };
 
     /**
@@ -352,12 +621,6 @@
         // non-textNodes
         // this part is important for attributes Binding and template repeat and conditions
         else if (n.nodeType === 1) {
-            // if (n.nodeName === "TEMPLATE") {
-            //     if (n.getAttribute("repeat"))
-            //         this.__Getter__Template(n, webComponent)
-            //     else if (n.getAttribute("if"))
-            //         console.log("do if binding here");
-            // } else 
             if (n.attributes.length)
                 this.__GetterAttributes__(n, nodeObject);
 
@@ -377,6 +640,8 @@
         if (n.nodeName === "INPUT" && n.value.indexOf("{{") !== -1) {
             // this.__Getter__Input(n, webComponent, setter);
         }
+
+
         attributeIterator(n, prototype, nodeObject, webComponent, function(bindingObject) {
             createBindingObject(nodeObject, bindingObject);
         });
@@ -394,13 +659,12 @@
                 var _keys = getBindingVariables(attr.value);
 
                 if (attr.name.indexOf("on-") !== -1) {
-                    // var obj = attributeIterator.__CreateEvent__Object(attr, _keys, webComponent);
+                    var obj = utils.__CreateEvent__Object(attr, _keys, webComponent);
 
-                    // if (isFunction(callback) && keys(obj).length)
-                    //     callback(obj);
+                    if (isFunction(callback) && keys(obj).length)
+                        callback(obj);
                 } else {
-
-                    var obj = attributeIterator.__CreateAttribute__Object(attr, _keys, prototype, n, nodeObject, webComponent);
+                    var obj = utils.__CreateAttribute__Object(attr, _keys, prototype, n, nodeObject, webComponent);
 
                     if (isFunction(callback) && keys(obj).length)
                         callback(obj);
@@ -411,63 +675,173 @@
 
 
             } else if (attr.name === "repeat") {
-                console.log("template", attr, n);
+                var obj = utils.__CreateRepeater__Object(n, attr, webComponent, prototype, nodeObject);
+                if (isFunction(callback) && keys(obj).length)
+                    callback(obj);
             }
         })
     }
 
-    attributeIterator.__CreateAttribute__Object = function(attr, keys, prototype, n, nodeObject, webComponent) {
-        var values;
-        if (n)
-            values = getValuesFromKeys(keys, prototype, nodeObject, n, webComponent); // for second level
-        else
-            values = getValuesFromKeys(keys, prototype); // for first level
+    var utils = {
+        __CreateRepeater__Object: function(n, attrValue, webComponent, prototype, nodeObject) {
+            var bindingObject = ChantersConstants("repeaterObject").parsingLevel;
+
+            bindingObject.nextSibling = n.nextSibling;
+            bindingObject.parentNode = n.parentNode;
+
+            bindingObject.raw = attrValue.value;
+
+            bindingObject.template = n;
+            bindingObject.templateClone = cloneHTMLNodes(n);
+
+            bindingObject.iteratorObjectName = attrValue.value.split(" ")[0];
+
+            if (!bindingObject.targetArrayName)
+                bindingObject.targetArrayName = attrValue.value.split(" ")[2];
+
+            var keys = [attrValue.value.split(" ")[2]];
+            bindingObject.targetArray = getValuesFromKeys(keys, prototype)[0];
+
+            return bindingObject;
+
+        },
+        __CreateTextNode__Object: function(n, prototype, nodeObject, webComponent, keys) {
+            var bindingObject = ChantersConstants("TextObect");
+            bindingObject.keys = keys;
+            bindingObject.raw = n.textContent.trim();
+            bindingObject.values = getValuesFromKeys(keys, prototype, nodeObject, n, webComponent);
+
+            createBindingObject(nodeObject, bindingObject);
+        },
+        __CreateAttribute__Object: function(attr, keys, prototype, n, nodeObject, webComponent) {
+            var bindingObject = ChantersConstants("AttributeObect").Attribute;
+
+
+            if (n.processedNode && nodeObject.parsingLevel) {
+                // debugger;
+                keys = handleRepeaterKeys(keys, n, nodeObject, 'attribute', attr);
+            }
+
+            var values = getValuesFromKeys(keys, prototype, nodeObject, n, webComponent);
+            bindingObject.raw = attr.value,
+                bindingObject.keys = keys,
+                bindingObject.values = values,
+                bindingObject.attributeName = attr.name;
 
 
 
-        var obj = {
-            bindingType: "Attribute",
-            raw: attr.value,
-            keys: keys,
-            values: values,
-            attrName: attr.name
+
+            return bindingObject;
+
+        },
+        __CreateEvent__Object: function(attr, key, webComponent, _function, eventType) {
+            var eventName = eventType || attr.name.split("on-")[1];
+            var callback = _function || webComponent[key].bind(webComponent) || undefined;
+
+
+            var bindingObject = ChantersConstants("EventObject");
+
+            bindingObject.eventName = eventName,
+                bindingObject.functionBody = callback,
+                bindingObject.scopeVariable = key,
+                bindingObject.raw = attr.value;
+
+            return bindingObject;
+        },
+        __checkValuesFromKeys__: function(o, s, mapper) {
+            s = s.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
+            s = s.replace(/^\./, ''); // strip a leading dot
+            var a = s.split('.');
+
+            for (var i = 0, n = a.length; i < n; ++i) {
+                var k = a[i];
+
+                if (k in o) {
+
+                    if (mapper[k] && i === a.length - 1)
+                        return false;
+
+                    if (isString(o[k]) || isNumber(o[k]) || typeof o[k] === "boolean")
+                        mapper[k] = true;
+
+
+                    if (isObject(o[k])) {
+                        if (!mapper[k])
+                            mapper[k] = {};
+
+                        mapper = mapper[k];
+                    }
+
+                    o = o[k];
+                } else {
+                    return;
+                }
+            }
+
+            return true;
         }
-
-        return obj;
     }
 
     Getters.prototype.__GetterTextNodes__ = function(n, nodeObject) {
-        // if (n.processedNode)
-        // debugger;
-
-
         var keys = getBindingVariables(n.textContent),
             prototype = this.prototype,
             templateInstance = this.webComponent.templateInstance;
 
         if (!keys) return;
 
-        var bindingObject = {
-            keys: keys,
-            bindingType: "TextContent",
-            raw: n.textContent.trim(),
-            values: getValuesFromKeys(keys, prototype, nodeObject, n, this.webComponent)
-        }
-        createBindingObject(nodeObject, bindingObject);
+
+        if (n.processedNode && nodeObject.parsingLevel)
+            keys = handleRepeaterKeys(keys, n, nodeObject, "textContent");
+
+
+        utils.__CreateTextNode__Object(n, prototype, nodeObject, this.webComponent, keys);
     }
+
+    function handleRepeaterKeys(keys, n, nodeObject, type, attr) {
+        var _from = keys;
+        var _with = [];
+        var iteratorKey = nodeObject.parsingLevel.iteratorObjectName;
+        var _keys = [];
+
+        _with = keys.map(function(key) {
+
+            if (key.indexOf(iteratorKey) !== -1) {
+                key = key.replace(iteratorKey, n.keyFromTop);
+            }
+
+            _keys.push(key);
+            return "{{" + key + "}}";
+
+        })
+
+        if (type === "textContent")
+            n.textContent = setBindingVariables(n.textContent, _from, _with);
+
+        else if (type === "attribute") {
+
+            n.setAttribute(attr.name, setBindingVariables(attr.value, _from, _with));
+        }
+
+        return _keys;
+
+    }
+
+
+
+    // setBindingVariables(bindingObject.raw, _from, _with)
 
     function getValuesFromKeys(keys, prototype, nodeObject, n, webComponent) {
         var values = [];
-        var templateInstance = webComponent.templateInstance;
+        var templateInstance = webComponent && webComponent.templateInstance;
 
         forLoop(keys, function(key, i) {
-            values.push(byString(prototype, key, nodeObject, n, templateInstance));
+            values.push(byString(prototype, key, nodeObject, n, templateInstance, webComponent));
         });
 
         return values;
     }
 
-    function byString(prototype, s, bindingObject, node, templateInstance) {
+    function byString(prototype, s, bindingObject, node, templateInstance, webComponent) {
         s = s.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
         s = s.replace(/^\./, ''); // strip a leading dot
         var a = s.split('.');
@@ -479,12 +853,21 @@
             if (k in prototype) {
 
                 if ((isString(prototype[k]) || isNumber(prototype[k])) && bindingObject) {
-                    bindingObject.obj = prototype;
+                    if (!bindingObject.obj) {
+                        bindingObject.obj = {};
+                        bindingObject.clone = {};
+                    }
+
+                    // if (node.processedNode)
+                    //     debugger;
+
+                    bindingObject.obj[k] = webComponent;
+                    bindingObject.clone[k] = prototype;
                     mapNodes(node, bindingObject, templateInstance, k);
-                    // bindingObject.templateInstance = templateInstance[k];
+                    bindingObject.targetNodes = templateInstance[k];
                 }
 
-                if (isObject(prototype[k])) {
+                if (isObject(prototype[k]) && bindingObject) {
                     if (!templateInstance[k])
                         templateInstance[k] = {};
 
@@ -492,6 +875,8 @@
                 }
 
                 prototype = prototype[k];
+                if (webComponent)
+                    webComponent = webComponent[k];
             } else {
                 return;
             }

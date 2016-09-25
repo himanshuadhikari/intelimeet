@@ -1,7 +1,10 @@
 Chanters("chanters-header", {
     changeMode: function() {
-        this.user.name = "Super Hero";
-        this.roles[1] = "No Work";
+        this.color = "blue";
+        // this.mode = "Night Day";
+        // this.fontSize = 50;
+        this.orders[0].name = "Raman";
+        this.orders[1].name = "Ashish";
     },
     myclass: "white",
     mode: "Day Mode",

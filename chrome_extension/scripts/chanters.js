@@ -194,7 +194,8 @@
         var node = document.currentScript.parentNode;
         var content = node.querySelector("template").content;
         var webComponent = new WebComponent(node, prototype);
-        // node.parentNode.replaceChild(webComponent, node);
+        console.log(webComponent.mode = "afsdf")
+            // node.parentNode.replaceChild(webComponent, node);
 
         var XFooProto = Object.create(HTMLElement.prototype, {
             createdCallback: {
