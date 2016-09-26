@@ -6,15 +6,9 @@
         }
         </style>
         <div id="header" class="header btm-border dark-div fixed-top">
-            <div>{{mode}}</div>
-            <template repeat="order in orders">
-                <div>
-                    <input type="text" value="{{mode}}" />
-                    <input type="text" on-focus="{{changeMode}}" value="{{roles.0.role}}" />
-                </div>
-                <div> {{order.name}}</div>
-                <input type="text" value="{{order.name}}" />
-            </template>
+            <input type="text" value="{{name}}" style="color :{{color}}" />
+            <input type="text" value="{{color}}" />
+            <button on-click="{{hello}}">{{name}}</button>
         </div>
     </template>
     <script src="../scripts/helpers/chanters-header.js"></script>

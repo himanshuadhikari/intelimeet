@@ -518,14 +518,7 @@
 
 
     WebComponent.prototype.initializeComponent = function(webComponent, proto) {
-        // var template = node.querySelector("template");
-        // this.node = createHTMLElement(getNodeName(node));
-
-        // if (!template) return;
-
         this.content = webComponent;
-        // this.content.prototype = proto;
-        // this.node.prototype = proto;
     }
 
 
@@ -688,7 +681,10 @@
 
             if (n.processedNode) {
                 key = handleRepeaterKeys([key], n, nodeObject, 'attribute', attr[0]);
+            } else {
+                key = [key];
             }
+
 
             n.value = getValuesFromKeys(key, prototype, bindingObject, n, webComponent);
 

@@ -1,4 +1,5 @@
 Chanters("chanters-header", {
+    name: "rajan",
     changeMode: function() {
         this.color = "blue";
         this.mode = false;
@@ -62,5 +63,10 @@ Chanters("chanters-header", {
         }, {
             key: "five"
         }]
-    }]
+    }],
+    hello: function() {
+
+        alert("rajan");
+        this.name = "himanshu";
+    }
 });
