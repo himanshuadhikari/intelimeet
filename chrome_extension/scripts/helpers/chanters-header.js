@@ -1,7 +1,7 @@
 Chanters("chanters-header", {
     changeMode: function() {
         this.color = "blue";
-        // this.mode = "Night Day";
+        this.mode = false;
         // this.fontSize = 50;
         this.orders[0].name = "Raman";
         this.orders[1].name = "Ashish";
