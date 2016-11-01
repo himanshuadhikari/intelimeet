@@ -4,8 +4,11 @@
         @import "style/chanters.css";
         @import "style/logo.css";
         @import "style/chanters-header.css";
+        #mode {
+            left: 20px;
+        }
         </style>
-        <div id="header" class="header btm-border dark-div fixed-top">
+        <div id="header" class="header btm-border dark-div fixed-top z-index-top">
             <div id="logo" class="border">
                 <div class="bar1"></div>
                 <div class="bar2"></div>
@@ -13,6 +16,10 @@
                 <div class="bar4"></div>
             </div>
             <div class="logout">
+                <div class="image-upload fixed">
+                    <span class="txt-shadow btn-menu" on-click="{{changeBackground}}">Background</span>
+                    <input autocomplete="" accept=".jpg, .jpeg, .png, .JPG, .JPEG, .PNG" type="file" id="background" multiple class="hidden">
+                </div>
                 <button class="txt-shadow btn-menu" on-click="{{changeMode}}" id="mode">{{mode}}</button>
             </div>
         </div>

@@ -264,3 +264,15 @@ chanters-view {
     border: 2px solid red !important;
     transition: all .500s ease-in-out;
 }
+
+.z-index-top {
+    z-index: 9;
+}
+
+.z-index-center {
+    z-index: 5;
+}
+
+.z-index-bottom {
+    z-index: -1;
+}

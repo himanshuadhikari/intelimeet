@@ -251,6 +251,21 @@
 
                     if (webComponent.onReady)
                         webComponent.onReady();
+
+                    if (webComponent.inheritParent) {
+                        webComponent.parent = webComponent.parentNode;
+
+
+                        webComponent.parent.communicate = function(options, callback) {
+                            // todo :: refactor this code/logic
+                            var element = this.querySelector(options.element);
+                            if (element && element[options.effectedProperty])
+                                element[options.effectedProperty] = options.newValue;
+
+                            if (element[options.effectedProperty + "_"])
+                                element[options.effectedProperty + "_"](options.newValue);
+                        }
+                    }
                 }
             }
         });

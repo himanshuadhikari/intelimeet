@@ -2,6 +2,18 @@
 
 <head>
     <title>Final Version</title>
+    <style>
+    .dark-div {
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+    
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    </style>
+    <script src="scripts/jquery-3.0.0.min.js"></script>
+    <script src="scripts/jquery-ui.min.js"></script>
     <script src="scripts/refactor.js"></script>
     <script src="scripts/background.js"></script>
     <link rel="import" href="views/chanters-header.html">
@@ -13,7 +25,7 @@
 <body>
     <chanters-view>
         <chanters-header></chanters-header>
-        <chanters-background></chanters-background>
+        <chanters-background class="container"></chanters-background>
         <chanters-content></chanters-content>
         <chanters-footer></chanters-footer>
     </chanters-view>

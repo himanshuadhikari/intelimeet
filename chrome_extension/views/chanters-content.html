@@ -2,7 +2,22 @@
     <template>
         <style>
         @import "style/chanters.css";
+        :host {
+            position: relative;
+            top: 39px;
+            height: 100%;
+        }
+        
+        #view {
+            position: absolute;
+            height: inherit;
+            width: 100%;
+            transition: all .5s linear .2s;
+        }
         </style>
+        <div class="z-index-top" id="view" style="position: absolute;">
+            <h1>{{mode}}</h1>
+        </div>
     </template>
     <script src="../scripts/helpers/chanters-content.js"></script>
 </chanters-element>

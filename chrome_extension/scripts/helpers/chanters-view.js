@@ -56,13 +56,5 @@
          this.loadTemplate(function(error, userRequestedFile) {
              this.insertToDom(userRequestedFile);
          }.bind(this));
-     },
-     mode: "",
-     mode_: function() {
-        
-         if (this.mode === "day")
-             this.classList.remove("dark-div");
-         if (this.mode === "night")
-             this.classList.add("dark-div");
      }
  });
