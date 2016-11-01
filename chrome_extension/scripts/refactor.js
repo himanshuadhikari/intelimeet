@@ -9,6 +9,7 @@
  * ShadowRoot not supporting
  * Provides light Two-way data binding(browser supported) i.e.,
  * Obect.defineProperty depends on the browser
+ * https://plnkr.co/edit/Ij8WmgZwlFDO89X5JnIv?p=preview
  */
 
 
@@ -519,6 +520,7 @@
 
     WebComponent.prototype.initializeComponent = function(webComponent, proto) {
         this.content = webComponent;
+        webComponent.$ = {};
     }
 
 
@@ -649,6 +651,8 @@
             this.__Getter__Input(n, prototype, nodeObject, webComponent);
         }
 
+        if (n.id)
+            webComponent.$[n.id] = n;
 
         attributeIterator(n, prototype, nodeObject, webComponent, function(bindingObject) {
             createBindingObject(nodeObject, bindingObject);
@@ -732,6 +736,7 @@
                 if (isFunction(callback) && keys(obj).length)
                     callback(obj);
             }
+
         })
     }
 
@@ -795,7 +800,7 @@
         },
         __CreateEvent__Object: function(attr, key, webComponent, _function, eventType) {
             var eventName = eventType || attr.name.split("on-")[1];
-            var callback = _function || webComponent[key].bind(webComponent) || undefined;
+            var callback = _function || (webComponent[key] && webComponent[key].bind(webComponent)) || undefined;
 
 
             var bindingObject = ChantersConstants("EventObject");

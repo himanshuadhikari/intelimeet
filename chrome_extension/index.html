@@ -2,22 +2,21 @@
 
 <head>
     <title>Final Version</title>
-    <link rel="stylesheet" type="text/css" href="style/chanters.css">
-    <link rel="stylesheet" type="text/css" href="style/logo.css">
-    <link rel="stylesheet" type="text/css" href="style/media.css">
-    <!-- <script src="scripts/chanters.js"></script> -->
     <script src="scripts/refactor.js"></script>
     <script src="scripts/background.js"></script>
-    <link rel="import" href="views/testing.html">
+    <link rel="import" href="views/chanters-header.html">
+    <link rel="import" href="views/chanters-background.html">
+    <link rel="import" href="views/chanters-view.html">
+    <link rel="import" href="views/chanters-content.html">
 </head>
 
 <body>
-    <div class="wrapper-fluid">
-        <chanters-header>
-            <h1>one</h1>
-            <h2>two</h2>
-        </chanters-header>
-    </div>
+    <chanters-view>
+        <chanters-header></chanters-header>
+        <chanters-background></chanters-background>
+        <chanters-content></chanters-content>
+        <chanters-footer></chanters-footer>
+    </chanters-view>
 </body>
 
 </html>
