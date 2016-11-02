@@ -249,23 +249,23 @@
                     this.createShadowRoot().appendChild(clone);
                     var webComponent = new WebComponent(this, prototype);
 
-                    if (webComponent.onReady)
-                        webComponent.onReady();
-
                     if (webComponent.inheritParent) {
                         webComponent.parent = webComponent.parentNode;
 
+                        // webComponent.parent.communicate = function(options, callback) {
+                        //     // todo :: refactor this code/logic
+                        //     var element = this.querySelector(options.element);
+                        //     if (element && element[options.effectedProperty])
+                        //         element[options.effectedProperty] = options.newValue;
 
-                        webComponent.parent.communicate = function(options, callback) {
-                            // todo :: refactor this code/logic
-                            var element = this.querySelector(options.element);
-                            if (element && element[options.effectedProperty])
-                                element[options.effectedProperty] = options.newValue;
-
-                            if (element[options.effectedProperty + "_"])
-                                element[options.effectedProperty + "_"](options.newValue);
-                        }
+                        //     if (element[options.effectedProperty + "_"])
+                        //         element[options.effectedProperty + "_"](options.newValue);
+                        // }
                     }
+
+
+                    if (webComponent.onReady)
+                        webComponent.onReady();
                 }
             }
         });
@@ -536,6 +536,10 @@
     WebComponent.prototype.initializeComponent = function(webComponent, proto) {
         this.content = webComponent;
         webComponent.$ = {};
+        if (keys(webComponent.dataset).length)
+            forLoop(webComponent.dataset, function(key, value) {
+                proto[key] = value;
+            });
     }
 
 

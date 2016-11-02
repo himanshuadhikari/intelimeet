@@ -33,11 +33,19 @@ body {
     border-bottom: 1px solid rgba(255, 255, 255, 0.35);
 }
 
+.fixed {
+    position: fixed;
+}
+
 .fixed-top {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
+}
+
+.absolute {
+    position: absolute;
 }
 
 .singin,
@@ -136,14 +144,18 @@ chanters-view {
     z-index: -1;
 }
 
+.transition {
+    transition: all .5s linear .2s;
+}
+
 .hidden,
 .visible {
-    visibility: hidden;
-    transition: all 2s linear 1s;
+    opacity: 0;
+    transition: all .5s linear .2s;
 }
 
 .visible {
-    visibility: visible;
+    opacity: 1;
 }
 
 .fixed {
@@ -211,10 +223,6 @@ chanters-view {
     background-color: rgba(0, 0, 0, 0.5);
 }
 
-.btm-border {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.35);
-}
-
 .txt-shadow {
     text-shadow: 0 0 50px rgba(0, 0, 0, 1);
 }
@@ -265,6 +273,10 @@ chanters-view {
     transition: all .500s ease-in-out;
 }
 
+.z-index-pinnacle {
+    z-index: 99;
+}
+
 .z-index-top {
     z-index: 9;
 }
@@ -275,4 +287,18 @@ chanters-view {
 
 .z-index-bottom {
     z-index: -1;
+}
+
+.bg {
+    background-image: url("../images/ui-icons_ffd27a_256x240.png");
+    height: 30px;
+    width: 30px;
+    top: 5px;
+    border-radius: 20px;
+    top: 2px;
+    background-size: 380px 360px;
+}
+
+.bg-settings {
+    background-position: -284px -166px;
 }

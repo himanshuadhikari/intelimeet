@@ -1,5 +1,6 @@
 Chanters("chanters-header", {
     mode: "Day Mode",
+    visibility: "hidden",
     onReady: function createList(event) {
         // var that = this;
         // setTimeout(function() {
@@ -28,5 +29,12 @@ Chanters("chanters-header", {
             newValue: this.mode
         });
     },
-    inheritParent: true
+    inheritParent: true,
+    openSettings: function() {
+        if (this.visibility === "hidden")
+            this.visibility = "visible";
+        else
+            this.visibility = "hidden";
+
+    }
 });

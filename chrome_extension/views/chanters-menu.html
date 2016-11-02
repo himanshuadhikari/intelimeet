@@ -1,0 +1,30 @@
+<chanters-element>
+    <template>
+        <style>
+        @import "style/chanters.css";
+        #menu {
+            color: white;
+            list-style: none;
+            top: 40px;
+            right: -20px;
+            width: 200px;
+            border-radius: 5px;
+        }
+        
+        #menu li {
+            display: block;
+            padding: 10px;
+        }
+        
+        #menu li:hover {
+            background: red;
+        }
+        </style>
+        <ul id="menu" class="border dark-div absolute z-index-top box-shadow {{visibility}}">
+            <li>Change BackGround</li>
+            <li>Resize BackGround</li>
+            <li>Mode</li>
+        </ul>
+    </template>
+    <script src="../scripts/helpers/chanters-menu.js"></script>
+</chanters-element>

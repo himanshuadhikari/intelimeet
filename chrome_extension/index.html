@@ -20,11 +20,14 @@
     <link rel="import" href="views/chanters-background.html">
     <link rel="import" href="views/chanters-view.html">
     <link rel="import" href="views/chanters-content.html">
+    <link rel="import" href="views/chanters-menu.html">
 </head>
 
 <body>
     <chanters-view>
-        <chanters-header></chanters-header>
+        <chanters-header>
+            <chanters-menu data-visibility="hidden" top=""></chanters-menu>
+        </chanters-header>
         <chanters-background class="container"></chanters-background>
         <chanters-content></chanters-content>
         <chanters-footer></chanters-footer>
