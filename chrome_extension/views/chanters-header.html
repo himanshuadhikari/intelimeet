@@ -16,13 +16,8 @@
                 <div class="bar4"></div>
             </div>
             <div class="logout">
-                <!--  <div class="image-upload fixed">
-                    <span class="txt-shadow btn-menu" on-click="{{changeBackground}}">Background</span>
-                    <input autocomplete="" accept=".jpg, .jpeg, .png, .JPG, .JPEG, .PNG" type="file" id="background" multiple class="hidden">
-                </div>
-                <button class="txt-shadow btn-menu" on-click="{{changeMode}}" id="mode">{{mode}}</button> -->
                 <button class="txt-shadow btn-menu bg bg-settings" on-click="{{openSettings}}" id="mode"></button>
-                <content select="chanters-menu"></content>
+                <content select="chanters-menu" class="{{visibility}}"></content>
             </div>
         </div>
     </template>

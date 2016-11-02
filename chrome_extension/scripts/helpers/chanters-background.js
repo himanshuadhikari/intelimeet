@@ -1,7 +1,11 @@
 Chanters("chanters-background", {
-    backgroundImg: "background image",
+    backgroundImg: localStorage.getItem("backgroundImgUrl") || "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=",
+    zIndex: "z-index-center",
+    zIndex_: function(event) {
+        event.target.zIndex = event.target.zIndex === "z-index-center" ? "z-index-center" : "z-index-top";
+        this.zIndex = event.target.zIndex;
+    },
     onReady: function() {
-        this.backgroundImg = "../images/5740fe48-d74e-4d95-8ec7-8c1f738cabc0.jpg";
 
         var that = this;
 
@@ -15,7 +19,13 @@ Chanters("chanters-background", {
         window.onload = function() {
             var heightToScroll = window.outerHeight - that.$.background.height;
             var widthToScroll = window.outerWidth - that.$.background.width;
+
+            console.log(heightToScroll, widthToScroll);
+
             $(that.$.background).draggable({ containment: [widthToScroll, heightToScroll, 0, 0], scroll: false, cursor: "pointer" });
+
+            // if (localStorage.backgroundImgUrl)
+            //     that.backgroundImg = localStorage.getItem("backgroundImgUrl");
         }
 
         window.onbeforeunload = function() {
@@ -25,9 +35,27 @@ Chanters("chanters-background", {
     },
     imageList: [],
     imageList_: function(list) {
+        this.imageList = list;
         var _URL = window.URL || window.webkitURL,
-            blobURL = _URL.createObjectURL(list[0]);
+            blobURL = this.getBlobUrl(this.imageList[0]);
 
-        this.$.background.src = blobURL;
+        this.backgroundImg = blobURL;
+
+        function saveImage() {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                localStorage.backgroundImgUrl = reader.result; //stores the image to localStorage
+            }
+
+            reader.readAsDataURL(list[0]);
+        }
+
+        saveImage();
+
+    },
+    getBlobUrl: function(file) {
+        var _URL = window.URL || window.webkitURL,
+            blobURL = _URL.createObjectURL(file);
+        return blobURL;
     }
 });

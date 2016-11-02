@@ -239,6 +239,7 @@
     }
 
     Chanters.init = function(name, prototype) {
+        var ChantersObject = {};
         var node = document.currentScript.parentNode;
 
         var XFooProto = Object.create(HTMLElement.prototype, {
@@ -252,15 +253,15 @@
                     if (webComponent.inheritParent) {
                         webComponent.parent = webComponent.parentNode;
 
-                        // webComponent.parent.communicate = function(options, callback) {
-                        //     // todo :: refactor this code/logic
-                        //     var element = this.querySelector(options.element);
-                        //     if (element && element[options.effectedProperty])
-                        //         element[options.effectedProperty] = options.newValue;
+                        webComponent.parent.communicate = function(options, callback) {
+                            // todo :: refactor this code/logic
+                            var element = this.querySelector(options.element);
+                            if (element && element[options.effectedProperty])
+                                // element[options.effectedProperty] = options.newValue;
 
-                        //     if (element[options.effectedProperty + "_"])
-                        //         element[options.effectedProperty + "_"](options.newValue);
-                        // }
+                            if (element[options.effectedProperty + "_"])
+                                element[options.effectedProperty + "_"](options.newValue);
+                        }
                     }
 
 
@@ -613,8 +614,17 @@
     };
 
     Setters.prototype.__Setter__Events = function(n, bindingObject) {
-        if (bindingObject.functionBody)
-            addEventListener(n, bindingObject.eventName, bindingObject.functionBody);
+        // if (bindingObject.arguments) {
+        n.addEventListener(bindingObject.eventName, function(event) {
+            var arr = [event];
+            arr = arr.concat(bindingObject.arguments);
+            bindingObject.functionBody.apply({}, arr);
+        }, true);
+        return;
+        // }
+
+        // if (bindingObject.functionBody)
+        //     addEventListener(n, bindingObject.eventName, bindingObject.functionBody);
     };
 
     /**
@@ -732,14 +742,24 @@
 
         forLoop(n.attributes, function(index, attr) {
             if (attr.value.indexOf("{{") !== -1) {
-                var _keys = getBindingVariables(attr.value);
+
 
                 if (attr.name.indexOf("on-") !== -1) {
+                    if (attr.value.indexOf("(") !== -1) {
+                        var functionName = attr.value.split("(")[0];
+                        functionName = functionName + "}}";
+                    } else
+                        functionName = attr.value;
+
+                    var _keys = getBindingVariables(functionName);
+
                     var obj = utils.__CreateEvent__Object(attr, _keys, webComponent);
 
                     if (isFunction(callback) && keys(obj).length)
                         callback(obj);
                 } else {
+                    var _keys = getBindingVariables(attr.value);
+
                     var obj = utils.__CreateAttribute__Object(attr, _keys, prototype, n, nodeObject, webComponent);
 
                     if (isFunction(callback) && keys(obj).length)
@@ -829,6 +849,11 @@
                 bindingObject.scopeVariable = key,
                 bindingObject.raw = attr.value;
 
+
+            if (attr.value.indexOf("(") !== -1) {
+                bindingObject.arguments = getFunctionArguments(attr.value);
+            }
+
             return bindingObject;
         },
         __checkValuesFromKeys__: function(o, s, mapper) {
@@ -863,6 +888,17 @@
 
             return true;
         }
+    }
+
+
+    function getFunctionArguments(str) {
+        var args = /\(\s*([^)]+?)\s*\)/.exec(str);
+
+        if (args[1]) {
+            return args[1].split(/\s*,\s*/);
+        }
+
+        return args[0];
     }
 
     Getters.prototype.__GetterTextNodes__ = function(n, nodeObject) {

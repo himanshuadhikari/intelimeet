@@ -1,12 +1,6 @@
 Chanters("chanters-header", {
     mode: "Day Mode",
     visibility: "hidden",
-    onReady: function createList(event) {
-        // var that = this;
-        // setTimeout(function() {
-        //     that.mode = "Night Mode";
-        // }, 2000);
-    },
     changeBackground: function(event) {
         event.target.nextElementSibling.click();
         var that = this;
@@ -36,5 +30,16 @@ Chanters("chanters-header", {
         else
             this.visibility = "hidden";
 
+    },
+    menuItemClicked: function(event, item) {
+        if (item && this[item])
+            this[item](event);
+    },
+    resizeBackground: function(event) {
+        this.parent.communicate({
+            element: "chanters-background",
+            effectedProperty: "zIndex",
+            newValue: event
+        });
     }
 });

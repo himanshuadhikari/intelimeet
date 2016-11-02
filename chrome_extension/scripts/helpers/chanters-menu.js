@@ -1,6 +1,7 @@
 Chanters("chanters-menu", {
     inheritParent: true,
-    onReady: function() {
-        console.log(this.parent);
+    itemClick: function(event, itemName) {
+        if (this.callback)
+            this.parent[this.callback](event, itemName);
     }
 });

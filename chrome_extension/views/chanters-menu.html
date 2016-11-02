@@ -14,6 +14,7 @@
         #menu li {
             display: block;
             padding: 10px;
+            cursor: pointer;
         }
         
         #menu li:hover {
@@ -21,9 +22,10 @@
         }
         </style>
         <ul id="menu" class="border dark-div absolute z-index-top box-shadow {{visibility}}">
-            <li>Change BackGround</li>
-            <li>Resize BackGround</li>
-            <li>Mode</li>
+            <li on-click="{{itemClick(changeBackground)}}">Change BackGround</li>
+            <input autocomplete="" accept=".jpg, .jpeg, .png, .JPG, .JPEG, .PNG" type="file" id="background" multiple style="display:none">
+            <li on-click="{{itemClick(resizeBackground)}}">Resize BackGround</li>
+            <li on-click="{{itemClick(changeMode)}}">Mode</li>
         </ul>
     </template>
     <script src="../scripts/helpers/chanters-menu.js"></script>

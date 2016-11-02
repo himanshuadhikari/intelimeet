@@ -3,7 +3,8 @@
          console.log("hello from content portions");
      },
      mode: "Day Mode",
-     mode_: function() {
+     mode_: function(newValue) {
+         this.mode = newValue;
          if (this.mode === "Day Mode")
              this.$.view.classList.remove("dark-div");
          if (this.mode === "Night Mode")
