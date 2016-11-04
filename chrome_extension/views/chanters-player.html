@@ -1,4 +1,4 @@
-<chanters-player>
+<chanters-element>
     <template>
         <style>
         @import "../style/chanters.css";
@@ -9,10 +9,13 @@
         }
         </style>
         <div>
+            <audio id="audio" controls=""></audio>
             <ul id="songList" class="border box-shadow-inset chanters-player">
             </ul>
+            <canvas id="analyser"></canvas>
         </div>
     </template>
     <script src="../scripts/lib/mediaTags.js"></script>
+    <script src="../scripts/lib/player.js"></script>
     <script src="../scripts/helpers/chanters-player.js"></script>
-</chanters-player>
+</chanters-element>

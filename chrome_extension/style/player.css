@@ -27,7 +27,7 @@
       width: 100%;
       z-index: -1;
       top: 45px;
-      display: none;
+      /*display: none;*/
   }
   
   #welcome {
@@ -68,41 +68,77 @@
       transition: all 500s ease-in-out;
   }
   
-  #songList:first-child {
+  #songList li:first-child {
       margin-top: 40px;
   }
   
   #songList li {
-      border-bottom: 1px dotted #DDD;
-      transition: all 2s ease-in-out;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+      transition: all .5s linear .2s;
       position: relative;
       display: block;
       white-space: nowrap;
+      padding: 8px 5px 8px 10px;
       /*opacity: 0;*/
   }
   
   #songList li a {
       display: inline-block;
       cursor: pointer;
-      /*padding-top: 10px;
-            padding-left: 17px;*/
-      padding: 10px;
       height: inherit;
-      transition: all 500s ease-in-out;
-      white-space: normal;
+      /* transition: all 500s ease-in-out; */
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      width: 76%;
+      font-size: 13px;
+      color: #eee;
+      position: relative;
+      top: -20px;
+      left: 10px;
+  }
+  
+  #songList li div {
+      border-radius: 50%;
+      display: inline-block;
+      height: 40px;
+      width: 40px;
+      overflow: hidden;
+      box-shadow: inset 0px 0px 15px 0px rgba(0, 0, 0, 0.8);
+      -moz-box-shadow: inset 0px 0px 15px 0px rgba(0, 0, 0, 0.8);
+      -webkit-box-shadow: inset 0px 0px 15px 0px rgba(0, 0, 0, 0.8);
+      -o-box-shadow: inset 0px 0px 15px 0px rgba(0, 0, 0, 0.8);
+  }
+  
+  #songList li .artist {
+      left: 60px;
+  }
+  
+  #songList li .time,
+  #songList li .artist {
+      display: block;
+      width: 50%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 10px;
+      color: #777;
+      position: absolute;
+      bottom: 12px;
+  }
+  
+  #songList li .time {
+      left: 190px;
   }
   
   #songList li img {
       height: 40px;
       width: 40px;
-      border-radius: 50%;
-      display: inline-block;
-      white-space: normal;
+      position: relative;
+      z-index: -1;
   }
   
-  a:hover {
-      padding-left: 20px;
-      background-color: rgba(0, 0, 0, 0.3);
+  #songList li:hover {
+      background-color: rgba(0, 0, 0, 0.6);
   }
   
   #songList li:after,

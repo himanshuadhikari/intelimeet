@@ -22,11 +22,19 @@
         }
         </style>
         <ul id="menu" on-mouseleave="{{hideMenu}}" class="border dark-div absolute z-index-top box-shadow {{visibility}}">
-            <li on-click="{{itemClick(changeBackground, false)}}">Change BackGround</li>
+            <li on-click="{{itemClick(changeBackground, false)}}">
+                Change BackGround
+            </li>
             <input autocomplete="" accept=".jpg, .jpeg, .png, .JPG, .JPEG, .PNG" type="file" id="background" multiple style="display:none">
-            <li on-click="{{itemClick(resizeBackground, false)}}">Resize BackGround</li>
-            <li on-click="{{itemClick(changeMode, true)}}">Mode</li>
-            <li on-click="{{itemClick(createList,false)}}">Add Songs</li>
+            <li on-click="{{itemClick(resizeBackground, false)}}">
+                Resize BackGround
+            </li>
+            <li on-click="{{itemClick(changeMode, true)}}">
+                Mode
+            </li>
+            <li on-click="{{itemClick(createList,false)}}">
+                Add Songs
+            </li>
             <input autocomplete="" type="file" id="fileupload" multiple class="hidden" style="display:none">
         </ul>
     </template>

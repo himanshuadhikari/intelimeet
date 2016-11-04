@@ -29,7 +29,6 @@ Chanters("chanters-background", {
         var that = this;
         var heightToScroll = window.outerHeight - that.$.background.height;
         var widthToScroll = window.outerWidth - that.$.background.width;
-        console.log(heightToScroll, widthToScroll);
         $(that.$.background).draggable({ containment: [widthToScroll, heightToScroll, 0, 0], scroll: false, cursor: "pointer" });
     },
     imageList: [],
