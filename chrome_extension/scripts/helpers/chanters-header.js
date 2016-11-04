@@ -1,5 +1,4 @@
 Chanters("chanters-header", {
-    mode: "Day Mode",
     visibility: "hidden",
     changeBackground: function(event) {
         event.target.nextElementSibling.click();
@@ -14,22 +13,23 @@ Chanters("chanters-header", {
             });
         };
     },
-    changeMode: function() {
-        this.mode = this.mode === "Day Mode" ? "Night Mode" : "Day Mode";
+    changeMode: function(event) {
+        var mode = event.target.mode === "Night Mode" ? "Day Mode" : "Night Mode";
+        event.target.mode = mode;
 
         this.parent.communicate({
             element: "chanters-content",
             effectedProperty: "mode",
-            newValue: this.mode
+            newValue: mode
         });
     },
     inheritParent: true,
     openSettings: function() {
-        if (this.visibility === "hidden")
-            this.visibility = "visible";
-        else
-            this.visibility = "hidden";
-
+        this.parent.communicate({
+            element: "chanters-menu",
+            effectedProperty: "visibility",
+            newValue: event
+        })
     },
     menuItemClicked: function(event, item) {
         if (item && this[item])
@@ -41,5 +41,16 @@ Chanters("chanters-header", {
             effectedProperty: "zIndex",
             newValue: event
         });
+    },
+    createList: function(event, item) {
+        event.target.nextElementSibling.click();
+        var that = this;
+        event.target.nextElementSibling.onchange = function(event) {
+            that.parent.communicate({
+                element: "chanters-player",
+                effectedProperty: "imageList",
+                newValue: this.files
+            });
+        };
     }
 });

@@ -4,19 +4,21 @@
         @import "style/chanters.css";
         :host {
             position: relative;
-            top: 39px;
-            height: 100%;
         }
         
         #view {
             position: relative;
-            height: inherit;
+            height: 100%;
             width: 100%;
+            top: 40px;
             transition: all .5s linear .2s;
+            overflow: hidden;
         }
         </style>
         <div class="z-index-center" id="view">
-            <h1>{{mode}}</h1>
+            <wrapper class="{{visibility}}">
+                <content select="*"></content>
+            </wrapper>
         </div>
     </template>
     <script src="../scripts/helpers/chanters-content.js"></script>

@@ -1,0 +1,28 @@
+<chanters-player>
+    <template>
+        <style>
+        @import "../style/chanters.css";
+        @import "../style/player.css";
+        :host {
+            border: 1px solid red;
+            height: 100%;
+            width: 100%;
+        }
+        
+        #image {
+            height: 200px;
+            width: 200px;
+        }
+        </style>
+        <div>
+            <h1>player</h1>
+           <!--  <div class="fileupload {{visibility}} fixed" style="left:{{left}};top: {{top}}">
+                <span class="txt-shadow btn-menu" id="_fileupload" on-click="{{createList}}">Click Me</span>
+                <input autocomplete="" type="file" id="fileupload" multiple class="hidden">
+            </div> -->
+            <ul id="songList" class="border box-shadow-inset"></ul>
+        </div>
+    </template>
+    <script src="../scripts/lib/mediaTags.js"></script>
+    <script src="../scripts/helpers/chanters-player.js"></script>
+</chanters-player>

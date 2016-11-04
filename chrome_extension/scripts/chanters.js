@@ -185,6 +185,8 @@
             Chanters.init(name, prototype);
     }
 
+    Chanters.createElement = createHTMLElement;
+
     /**
      * ChantersJs constructor function
      */

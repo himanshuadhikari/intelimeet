@@ -1,35 +1,33 @@
  Chanters("chanters-login", {
-     domReady: function() {
-         // if (localStorage && localStorage.chantersId)
-         // this.remove();
-         // else
-         // localStorage.chantersId = Math.random();
+     loggedIn: false,
+     display: 'block',
+     userName: '',
+     email: '',
+     inheritParent: true,
+     onReady: function() {
+         if (localStorage && !localStorage.chantersId)
+             localStorage.chantersId = Math.random();
 
          if (this.authanticate()) {
              this.remove();
-             var _window = document.querySelector("chanters-view");
-             _window.template = "player.html";
+             this.parent.template_("chanters-player.html");
          }
      },
      goToPlayer: function() {
          if (this.userName && this.userName.trim() && this.email && this.email.trim()) {
              localStorage.userName = this.userName;
              localStorage.email = this.email;
-             var _window = document.querySelector("chanters-view");
-             _window.mode = "night";
-             _window.template = "player.html";
+             this.remove();
+             this.parent.template_("chanters-player.html");
          } else {
-             this.classList.add("loginFalse");
+             this.$.login.classList.add("loginFalse");
 
              setTimeout(function() {
-                 this.classList.remove("loginFalse");
+                 this.$.login.classList.remove("loginFalse");
              }.bind(this), 1000);
          }
      },
-     loggedIn: false,
-     display: 'block',
-     userName: '',
-     email: '',
+
      authanticate: function() {
          if (localStorage.userName && localStorage.email)
              return true;

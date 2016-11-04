@@ -238,6 +238,8 @@
             Chanters.init(name, prototype);
     }
 
+    Chanters.createElement = createHTMLElement;
+
     Chanters.init = function(name, prototype) {
         var ChantersObject = {};
         var node = document.currentScript.parentNode;
@@ -253,15 +255,17 @@
                     if (webComponent.inheritParent) {
                         webComponent.parent = webComponent.parentNode;
 
-                        webComponent.parent.communicate = function(options, callback) {
-                            // todo :: refactor this code/logic
-                            var element = this.querySelector(options.element);
-                            if (element && element[options.effectedProperty])
+
+                        if (webComponent.parent)
+                            webComponent.parent.communicate = function(options, callback) {
+                                // todo :: refactor this code/logic
+                                var element = this.querySelector(options.element);
+                                if (element && element[options.effectedProperty])
                                 // element[options.effectedProperty] = options.newValue;
 
-                            if (element[options.effectedProperty + "_"])
-                                element[options.effectedProperty + "_"](options.newValue);
-                        }
+                                    if (element[options.effectedProperty + "_"])
+                                    element[options.effectedProperty + "_"](options.newValue);
+                            }
                     }
 
 
@@ -405,7 +409,8 @@
                 if (!change)
                     return;
 
-                change.templateInstance = templateInstance;
+
+                change.templateInstance = this.templateInstance[key] || templateInstance;
                 clone[key] = val;
 
 
@@ -615,12 +620,18 @@
 
     Setters.prototype.__Setter__Events = function(n, bindingObject) {
         // if (bindingObject.arguments) {
+
         n.addEventListener(bindingObject.eventName, function(event) {
+            event.stopPropagation();
             var arr = [event];
-            arr = arr.concat(bindingObject.arguments);
+            if (bindingObject.arguments && bindingObject.arguments.length)
+                arr = arr.concat(bindingObject.arguments);
+
             bindingObject.functionBody.apply({}, arr);
+            event.preventDefault();
         }, true);
         return;
+
         // }
 
         // if (bindingObject.functionBody)

@@ -158,6 +158,14 @@ chanters-view {
     opacity: 1;
 }
 
+.show {
+    display: block;
+}
+
+.hide {
+    display: none;
+}
+
 .fixed {
     position: fixed;
 }
@@ -270,6 +278,11 @@ chanters-view {
 
 .active {
     border: 2px solid red !important;
+    transition: all .500s ease-in-out;
+}
+
+.active-left {
+    border-left: 2px solid red !important;
     transition: all .500s ease-in-out;
 }
 

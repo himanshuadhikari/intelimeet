@@ -21,11 +21,13 @@
             background: red;
         }
         </style>
-        <ul id="menu" class="border dark-div absolute z-index-top box-shadow {{visibility}}">
-            <li on-click="{{itemClick(changeBackground)}}">Change BackGround</li>
+        <ul id="menu" on-mouseleave="{{hideMenu}}" class="border dark-div absolute z-index-top box-shadow {{visibility}}">
+            <li on-click="{{itemClick(changeBackground, false)}}">Change BackGround</li>
             <input autocomplete="" accept=".jpg, .jpeg, .png, .JPG, .JPEG, .PNG" type="file" id="background" multiple style="display:none">
-            <li on-click="{{itemClick(resizeBackground)}}">Resize BackGround</li>
-            <li on-click="{{itemClick(changeMode)}}">Mode</li>
+            <li on-click="{{itemClick(resizeBackground, false)}}">Resize BackGround</li>
+            <li on-click="{{itemClick(changeMode, true)}}">Mode</li>
+            <li on-click="{{itemClick(createList,false)}}">Add Songs</li>
+            <input autocomplete="" type="file" id="fileupload" multiple class="hidden">
         </ul>
     </template>
     <script src="../scripts/helpers/chanters-menu.js"></script>

@@ -17,15 +17,7 @@ Chanters("chanters-background", {
         }();
 
         window.onload = function() {
-            var heightToScroll = window.outerHeight - that.$.background.height;
-            var widthToScroll = window.outerWidth - that.$.background.width;
-
-            console.log(heightToScroll, widthToScroll);
-
-            $(that.$.background).draggable({ containment: [widthToScroll, heightToScroll, 0, 0], scroll: false, cursor: "pointer" });
-
-            // if (localStorage.backgroundImgUrl)
-            //     that.backgroundImg = localStorage.getItem("backgroundImgUrl");
+            that.resizeImage();
         }
 
         window.onbeforeunload = function() {
@@ -33,13 +25,23 @@ Chanters("chanters-background", {
             localStorage.setItem("widthToScroll", getComputedStyle(that.$.background).left);
         }
     },
+    resizeImage: function() {
+        var that = this;
+        var heightToScroll = window.outerHeight - that.$.background.height;
+        var widthToScroll = window.outerWidth - that.$.background.width;
+        $(that.$.background).draggable({ containment: [widthToScroll, heightToScroll, 0, 0], scroll: false, cursor: "pointer" });
+    },
     imageList: [],
     imageList_: function(list) {
         this.imageList = list;
-        var _URL = window.URL || window.webkitURL,
-            blobURL = this.getBlobUrl(this.imageList[0]);
+        var blobURL = this.getBlobUrl(this.imageList[0]);
 
         this.backgroundImg = blobURL;
+
+
+        this.$.background.style.left = 0;
+        this.$.background.style.top = 0;
+        this.resizeImage();
 
         function saveImage() {
             var reader = new FileReader();

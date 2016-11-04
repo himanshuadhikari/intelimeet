@@ -1,7 +1,14 @@
-<chanters-login>
+<chanters-element>
     <template>
-        <link rel="stylesheet" type="text/css" href="style/login.css">
-        <div class="container-fluid child-container" style="display: {{display}}">
+        <style>
+        @import "style/chanters.css";
+        @import "style/login.css";
+        @import "style/media.css";
+        :host {
+            position: relative;
+        }
+        </style>
+        <div id="login" style="display: {{display}}">
             <div class="login-wrap border light-div box-shadow-inset">
                 <div class="dark-div btm-border">
                     <button class="form-text btn-login txt-shadow" on-click="{{goToPlayer}}" style="pointer:cursor">
@@ -17,5 +24,5 @@
             </div>
         </div>
     </template>
-    <script src="scripts/helpers/chanters-login.js"></script>
-</chanters-login>
+    <script src="../scripts/helpers/chanters-login.js"></script>
+</chanters-element>
