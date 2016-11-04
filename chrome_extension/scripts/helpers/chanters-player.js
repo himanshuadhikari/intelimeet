@@ -12,14 +12,6 @@ Chanters("chanters-player", {
                 jsmediatags.read(file, {
                     onSuccess: function(tag) {
                         var li = Chanters.createElement("li");
-                        var a = Chanters.createElement("a");
-                        a.innerHTML = tag.tags.title || file.name;
-                        li.appendChild(a);
-                        li.style.color = "whilte";
-
-                        var span = Chanters.createElement("span");
-                        span.classList.add("clear");
-                        li.appendChild(span);
 
                         if (tag.tags.picture) {
                             var img = Chanters.createElement("img");
@@ -33,6 +25,11 @@ Chanters("chanters-player", {
                             img.src = dataUrl;
                             li.appendChild(img);
                         }
+
+                        var a = Chanters.createElement("a");
+                        a.innerHTML = tag.tags.title || file.name;
+                        li.appendChild(a);
+
                         that.$.songList.appendChild(li);
                     },
                     onError: function(error) {

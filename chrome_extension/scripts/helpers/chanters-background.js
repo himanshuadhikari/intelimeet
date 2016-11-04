@@ -29,6 +29,7 @@ Chanters("chanters-background", {
         var that = this;
         var heightToScroll = window.outerHeight - that.$.background.height;
         var widthToScroll = window.outerWidth - that.$.background.width;
+        console.log(heightToScroll, widthToScroll);
         $(that.$.background).draggable({ containment: [widthToScroll, heightToScroll, 0, 0], scroll: false, cursor: "pointer" });
     },
     imageList: [],
@@ -38,17 +39,19 @@ Chanters("chanters-background", {
 
         this.backgroundImg = blobURL;
 
-
+        var that = this;
         this.$.background.style.left = 0;
         this.$.background.style.top = 0;
-        this.resizeImage();
+
+        setTimeout(function() {
+            that.resizeImage();
+        }, 1000);
 
         function saveImage() {
             var reader = new FileReader();
             reader.onload = function(e) {
                 localStorage.backgroundImgUrl = reader.result; //stores the image to localStorage
             }
-
             reader.readAsDataURL(list[0]);
         }
 
