@@ -1,15 +1,32 @@
 Chanters("chanters-player", {
+    src: "src",
+    "title": "title",
+    "duration": "duration",
+    "fileSize": "file size",
     onReady: function() {
-        this.player = new ChantersPlayer({
-            audio: this.$.audio,
-            canvas: this.$.analyser
-        });
+        if (localStorage.currentSong) {
+            // console.log(JSON.parse(localStorage.currentSong));
+            var song = JSON.parse(localStorage.currentSong);
+            this.$.wall.style.display = "block";
+            this.src = song.imageUrl;
+            this.title = song.title.replace(/%20/g, " ");
+            this.duration = song.duration;
+            this.fileSize = song.fileSize;
+        } else
+            this.player = new ChantersPlayer({
+                audio: this.$.audio,
+                canvas: this.$.analyser
+            });
     },
     imageList: [],
     imageList_: function(files) {
         this.createList(files);
     },
     createList: function createList(files) {
+        if (localStorage.currentSong) {
+            return;
+        }
+
         var that = this;
         var count = 0;
         // for (var i = 0; i < files.length; i++) {
@@ -86,7 +103,18 @@ Chanters("chanters-player", {
         this.$.audio.load();
         this.$.audio.play();
         this.$.audio.volume = 0.7;
+        this.saveTabInformation(file);
 
         this.player.visualizer();
+    },
+    saveTabInformation: function(file) {
+        var currentSong = {
+            title: file.name,
+            duration: file.duration,
+            size: file.size,
+            imageUrl: file.imageUrl
+        }
+
+        localStorage.currentSong = JSON.stringify(currentSong);
     }
 });
