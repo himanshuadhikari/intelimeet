@@ -1,11 +1,10 @@
 Chanters("chanters-player", {
-    src: "src",
+    src: "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=",
     "title": "title",
     "duration": "duration",
     "fileSize": "file size",
     onReady: function() {
         if (localStorage.currentSong) {
-            // console.log(JSON.parse(localStorage.currentSong));
             var song = JSON.parse(localStorage.currentSong);
             this.$.wall.style.display = "block";
             this.src = song.imageUrl;

@@ -2,8 +2,11 @@ Chanters("chanters-background", {
     backgroundImg: localStorage.getItem("backgroundImgUrl") || "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=",
     zIndex: "z-index-center",
     zIndex_: function(event) {
-        event.target.zIndex = event.target.zIndex === "z-index-center" ? "z-index-center" : "z-index-top";
+        event.target.zIndex = event.target.zIndex === "z-index-top" ? "z-index-center" : "z-index-top";
         this.zIndex = event.target.zIndex;
+        localStorage.heightToScroll = getComputedStyle(this.$.background).top;
+        localStorage.widthToScroll = getComputedStyle(this.$.background).left;
+
     },
     onReady: function() {
 
@@ -16,14 +19,12 @@ Chanters("chanters-background", {
             }
         }();
 
-        window.onload = function() {
-            that.resizeImage();
-        }
+        // window.onload = function() {
+        //     setTimeout(function() {
+                that.resizeImage();
+        //     }, 1000);// }
 
-        window.onbeforeunload = function() {
-            localStorage.setItem("heightToScroll", getComputedStyle(that.$.background).top);
-            localStorage.setItem("widthToScroll", getComputedStyle(that.$.background).left);
-        }
+
     },
     resizeImage: function() {
         var that = this;
@@ -41,6 +42,8 @@ Chanters("chanters-background", {
         var that = this;
         this.$.background.style.left = 0;
         this.$.background.style.top = 0;
+        localStorage.widthToScroll = 0;
+        localStorage.heightToScroll = 0;
 
         setTimeout(function() {
             that.resizeImage();

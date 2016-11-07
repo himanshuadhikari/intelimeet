@@ -39,7 +39,6 @@
      template_: function(newValue) {
          if (newValue)
              this.template = newValue;
-
          var flag = false;
          if (this.mode !== "Night Mode") {
              this.mode_("Night Mode");
