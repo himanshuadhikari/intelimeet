@@ -5,6 +5,7 @@
          if (localStorage.mode) {
              this.mode_(localStorage.mode);
          }
+
      },
      mode: "Day Mode",
      visibility: "show",

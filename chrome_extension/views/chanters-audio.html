@@ -1,0 +1,29 @@
+<chanters-element>
+    <template>
+        <style>
+        @import "../style/chanters.css";
+        @import "../style/player.css";
+        section {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+        }
+        
+        #audio {
+            padding: 10px;
+            border-radius: 5px;
+            width: 200px;
+            left: 500px;
+            top: 50px
+        }
+        </style>
+        <section>
+            <div id="audio" class="border dark-div absolute z-index-top box-shadow transition {{visibility}}">
+                <span id="currentTime">00 : 00</span>
+                <span id="totalTime">00 : 00</span>
+                <input type="range" id="seek" min="0" max="100" value="0">
+            </div>
+        </section>
+    </template>
+    <script src="../scripts/helpers/chanters-audio.js"></script>
+</chanters-element>

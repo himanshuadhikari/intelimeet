@@ -11,6 +11,7 @@
     var ChantersPlayer = function(mediaObject) {
         this.audio = mediaObject.audio;
         this.video = mediaObject.video;
+        this.seek = mediaObject.seek;
         this.canvas = mediaObject.canvas;
         this.audio.volume = .0;
 
@@ -19,6 +20,34 @@
             source = context.createMediaElementSource(this.audio),
             source.connect(analyser),
             analyser.connect(context.destination);
+
+
+        // this.audio.ontimeupdate = this.ontimeupdate.bind(this);
+
+        // this.seek.oninput = function() {
+        //     this.audio.currentTime = this.seek.value;
+        // }.bind(this);
+
+    }
+
+
+
+    ChantersPlayer.prototype.ontimeupdate = function() {
+        var curtime = parseInt(this.audio.currentTime, 10);
+        var min = Math.floor(curtime / 60);
+        var sec = curtime % 60;
+        if (sec < 10) {
+            sec = '0' + sec;
+        }
+        if (min < 60) {
+            min = '0' + min;
+        }
+
+        if (this.seek.max === "NaN") {
+            this.seek.max = this.audio.duration;
+        }
+
+        this.seek.value = Math.floor(this.audio.currentTime);
     }
 
 

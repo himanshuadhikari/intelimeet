@@ -1,0 +1,56 @@
+<html>
+    <head>
+        <title>JS and HTML5 Rule</title>
+        <script type='text/javascript'>
+ 
+            window.onload = function (){
+ 
+                var video = document.getElementById('my_video');
+                var thecanvas = document.getElementById('thecanvas');
+		var img = document.getElementById('thumbnail_img');
+ 
+ 
+		video.addEventListener('pause', function(){
+ 
+                        draw( video, thecanvas, img);
+ 
+		}, false);
+ 
+            };
+ 
+ 
+            function draw( video, thecanvas, img ){
+ 
+		// get the canvas context for drawing
+		var context = thecanvas.getContext('2d');
+ 
+		// draw the video contents into the canvas x, y, width, height
+                context.drawImage( video, 0, 0, thecanvas.width, thecanvas.height);
+ 
+		// get the image data from the canvas object
+                var dataURL = thecanvas.toDataURL();
+ 
+		// set the source of the img tag
+		img.setAttribute('src', dataURL);
+ 
+            }
+        </script>
+    </head>
+    <body>
+	The Video
+	<br />
+        <video id="my_video" controls>
+            <source src="http://jamesbaca.net/slides/source_code/html5_andJSThumbs/VeryMaryKate.mp4" type="video/mp4" />
+        </video>
+	<br />
+	The Canvas
+	<br />
+        <canvas id="thecanvas">
+        </canvas>
+	<br />
+	The Image
+	<br />
+        <img id="thumbnail_img" alt="Right click to save" />
+	<br />
+    </body>
+</html>

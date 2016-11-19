@@ -5,17 +5,21 @@
         @import "../style/player.css";
         </style>
         <div>
+            <chanters-notification id="notification" data-visibility="hidden" data-message="Loading..."></chanters-notification>
             <audio id="audio" controls=""></audio>
             <ul id="songList" class="border box-shadow-inset chanters-player">
             </ul>
             <canvas id="analyser"></canvas>
-            <div id="wall" class="dark-div">
-                <div class="poster">
+            <!-- visible when song is playing and new tab is open -->
+            <div id="wall" class="dark-div border">
+                <div class="poster border">
                     <img src="{{src}}">
                 </div>
                 <h2>Now Playing : {{title}}</h2>
                 <h4>Duration : {{duration}}</h4>
             </div>
+            <!-- visible when song is playing and new tab is open -->
+            <chanters-audio data-visibility="visible"></chanters-audio>
         </div>
     </template>
     <script src="../scripts/lib/mediaTags.js"></script>

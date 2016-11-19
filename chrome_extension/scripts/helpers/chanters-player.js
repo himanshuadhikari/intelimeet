@@ -4,32 +4,39 @@ Chanters("chanters-player", {
     "duration": "duration",
     "fileSize": "file size",
     onReady: function() {
-        if (localStorage.currentSong) {
-            var song = JSON.parse(localStorage.currentSong);
-            this.$.wall.style.display = "block";
-            this.src = song.imageUrl;
-            this.title = song.title.replace(/%20/g, " ");
-            this.duration = song.duration;
-            this.fileSize = song.fileSize;
-        } else
-            this.player = new ChantersPlayer({
-                audio: this.$.audio,
-                canvas: this.$.analyser
-            });
+        // if (localStorage.currentSong) {
+        //     var song = JSON.parse(localStorage.currentSong);
+        //     this.$.wall.style.display = "block";
+        //     this.src = song.imageUrl;
+        //     this.title = song.title.replace(/%20/g, " ");
+        //     this.duration = song.duration;
+        //     this.fileSize = song.fileSize;
+        // } else
+        this.showNotification("Welcome to Chanters...", "showWelcomeMessage");
+
+        this.player = new ChantersPlayer({
+            audio: this.$.audio,
+            canvas: this.$.analyser,
+            seek: this.$.seek
+        });
     },
     imageList: [],
     imageList_: function(files) {
         this.createList(files);
     },
     createList: function createList(files) {
-        if (localStorage.currentSong) {
-            return;
-        }
+        // if (localStorage.currentSong) {
+        //     return;
+        // }
 
         var that = this;
         var count = 0;
-        // for (var i = 0; i < files.length; i++) {
+
+
         (function nextIteration(file) {
+            var extension = file.name.split(".").pop();
+            if (extension.toLowerCase() !== "mp3")
+                return;
 
             jsmediatags.read(file, {
                 onSuccess: function(tag) {
@@ -63,7 +70,7 @@ Chanters("chanters-player", {
 
 
                         var songName = Chanters.createElement("a");
-                        songName.innerHTML = tag.tags.title || file.name;
+                        songName.innerHTML = file.title = tag.tags.title || file.name;
                         file.imageUrl = img.src;
 
                         songName.onclick = function() {
@@ -87,24 +94,32 @@ Chanters("chanters-player", {
                 },
                 onError: function(error) {
                     count++;
+                    nextIteration(files[count]);
                     console.log(error, file);
                 }
             });
 
+
         })(files[count]);
+
         // }
         that.$.songList.style.display = "block";
     },
     play: function(file) {
         var _URL = window.URL || window.webkitURL;
 
+
         this.$.audio.src = _URL.createObjectURL(file);
         this.$.audio.load();
         this.$.audio.play();
         this.$.audio.volume = 0.7;
-        this.saveTabInformation(file);
 
+        this.$.seek.max = this.$.audio.duration;
+
+        this.saveTabInformation(file);
         this.player.visualizer();
+
+        this.showNotification("Now Playing, " + file.title, "showNotification", file.imageUrl);
     },
     saveTabInformation: function(file) {
         var currentSong = {
@@ -115,5 +130,9 @@ Chanters("chanters-player", {
         }
 
         localStorage.currentSong = JSON.stringify(currentSong);
+    },
+    showNotification: function(message, whichNotification, imgSrc) {
+        this.$.notification[whichNotification](message, imgSrc);
+        this.$.notification.show();
     }
 });

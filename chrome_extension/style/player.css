@@ -62,15 +62,14 @@
       position: fixed;
       height: 100%;
       width: 18%;
-      /*overflow-y: scroll;
-            overflow-x: hidden;*/
-      overflow: hidden;
+      /*overflow: hidden;
+      overflow-y: scroll;
+      overflow-x: hidden;*/
       transition: all 500s ease-in-out;
   }
-  
-  #songList li:first-child {
+  /*#songList li:first-child {
       margin-top: 40px;
-  }
+  }*/
   
   #songList li {
       border-bottom: 1px solid rgba(255, 255, 255, 0.35);
@@ -153,7 +152,6 @@
   
   input[type=range] {
       -webkit-appearance: none;
-      margin: 10px 0;
       width: 100%;
       background-color: transparent;
   }
@@ -223,7 +221,6 @@
       width: 100%;
       position: relative;
       z-index: -1;
-      height: 350px;
   }
   
   #wall .poster {
@@ -241,4 +238,24 @@
   h4 {
       padding: 10px 0;
       word-break: break-all;
+  }
+  
+  #seek {
+      margin-top: 2px;
+      margin-top: 42px;
+  }
+  
+  #currentTime,
+  #totalTime {
+      position: absolute;
+      top: 10px;
+      color: white;
+  }
+  
+  #currentTime {
+      left: 15px;
+  }
+  
+  #totaltime {
+      right: 15px;
   }

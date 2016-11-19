@@ -21,6 +21,8 @@
     <link rel="import" href="views/chanters-view.html">
     <link rel="import" href="views/chanters-content.html">
     <link rel="import" href="views/chanters-menu.html">
+    <link rel="import" href="views/chanters-notification.html">
+    <link rel="import" href="views/chanters-audio.html">
 </head>
 
 <body>
@@ -29,7 +31,8 @@
             <chanters-menu data-visibility="hidden" data-callback="menuItemClicked"></chanters-menu>
         </chanters-header>
         <chanters-background class="container"></chanters-background>
-        <chanters-content data-template="chanters-login.html"></chanters-content>
+        <chanters-content data-template="chanters-login.html">
+        </chanters-content>
         <chanters-footer></chanters-footer>
     </chanters-view>
 </body>
