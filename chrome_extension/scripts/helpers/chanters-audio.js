@@ -1,9 +1,14 @@
 Chanters("chanters-audio", {
-    imgSrc: "/images/music-icon.png",
+    title: "N/A",
+    artist: "N/A",
+    album: "N/A",
+    year: "N/A",
+    theme: "dark",
     onReady: function() {
-        $(this.$.audio).draggable({
+        $(this.$.audioContainer).draggable({
             containment: "parent"
         });
+        this.setTheme();
     },
     show: function() {
         this.delay("visible");
@@ -20,6 +25,14 @@ Chanters("chanters-audio", {
 
         setTimeout(function() {
             this.visibility = visibility;
+        }.bind(this));
+    },
+    setTheme: function() {
+        Chanters.getImageBrightness(this.poster, function(brightness) {
+            if (brightness > 100)
+                this.theme = "dark";
+            else
+                this.theme = "light";
         }.bind(this));
     }
 });

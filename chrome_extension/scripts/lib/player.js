@@ -9,7 +9,8 @@
         ctx;
 
     var ChantersPlayer = function(mediaObject) {
-        this.audio = mediaObject.audio;
+        this.player = mediaObject.audio;
+        this.audio = this.player.$.audio;
         this.video = mediaObject.video;
         this.seek = mediaObject.seek;
         this.canvas = mediaObject.canvas;
@@ -22,11 +23,11 @@
             analyser.connect(context.destination);
 
 
-        // this.audio.ontimeupdate = this.ontimeupdate.bind(this);
+        this.audio.ontimeupdate = this.ontimeupdate.bind(this);
 
-        // this.seek.oninput = function() {
-        //     this.audio.currentTime = this.seek.value;
-        // }.bind(this);
+        this.seek.oninput = function() {
+            this.audio.currentTime = this.seek.value;
+        }.bind(this);
 
     }
 
@@ -48,6 +49,8 @@
         }
 
         this.seek.value = Math.floor(this.audio.currentTime);
+        this.player.currenttime = min + ' : ' + sec;
+
     }
 
 

@@ -12,18 +12,19 @@ Chanters("chanters-background", {
 
         var that = this;
 
-        ! function getImageScroll() {
+        function getImageScroll() {
             if (localStorage.getItem("heightToScroll") || localStorage.getItem("widthToScroll")) {
                 that.$.background.style.top = localStorage.getItem("heightToScroll") || "0";
                 that.$.background.style.left = localStorage.getItem("widthToScroll") || "0";
             }
-        }();
+        }
+        getImageScroll();
+        that.resizeImage();
 
-        // window.onload = function() {
-        //     setTimeout(function() {
-                that.resizeImage();
-        //     }, 1000);// }
-
+        window.onresize = function() {
+            // getImageScroll();
+            // that.resizeImage();
+        }
 
     },
     resizeImage: function() {

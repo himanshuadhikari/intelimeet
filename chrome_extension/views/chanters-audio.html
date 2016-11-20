@@ -4,24 +4,103 @@
         @import "../style/chanters.css";
         @import "../style/player.css";
         section {
-            position: absolute;
+            position: relative;
             height: 100%;
             width: 100%;
         }
         
-        #audio {
-            padding: 10px;
+        #audioContainer {
+            padding: 20px;
             border-radius: 5px;
             width: 200px;
             left: 500px;
-            top: 50px
+            top: 50px;
+            transition: all linear 1s;
+            overflow: hidden;
+            cursor: pointer;
+            text-shadow: 0 -1px rgba(0, 0, 0, .5);
+        }
+        
+        #audioContainer:hover {
+            overflow: visible;
+        }
+        
+        .light {
+            color: white;
+            background: white;
+        }
+        
+        .dark {
+            color: black;
+            background: black;
+        }
+        
+        article {
+            position: relative;
+        }
+        
+        .imageContainer {
+            height: 100px;
+            width: 100px;
+        }
+        
+        .blur {
+            filter: blur(5px);
+            height: 100%;
+            width: 100%;
+            left: 0;
+            top: 0;
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            transition: all linear 1s;
+        }
+        
+        .title,
+        .artist,
+        .year {
+            text-align: center;
+            margin: 10px 0 0 0;
+            word-break: break-all;
+            text-align: center;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .dark input[type=range]::-webkit-slider-thumb,
+        .dark input[type=range]::-webkit-slider-runnable-track {
+            background: black;
+            transition: all linear 1s;
+        }
+        
+        .light input[type=range]::-webkit-slider-thumb,
+        .light input[type=range]::-webkit-slider-runnable-track {
+            background: white;
+            transition: all linear 1s;
+        }
+        
+        input[type=range]::-webkit-slider-thumb {
+            height: 20px;
+            margin-top: -6px;
         }
         </style>
         <section>
-            <div id="audio" class="border dark-div absolute z-index-top box-shadow transition {{visibility}}">
-                <span id="currentTime">00 : 00</span>
-                <span id="totalTime">00 : 00</span>
-                <input type="range" id="seek" min="0" max="100" value="0">
+            <audio id="audio" controls=""></audio>
+            <div id="audioContainer" class="border absolute z-index-top box-shadow transition {{visibility}} {{theme}}">
+                <div class="blur absolute z-index-bottom" style='background-image: url("{{poster}}");'></div>
+                <div class="imageContainer border">
+                    <img style='background-image: url("{{poster}}");' />
+                </div>
+                <input id="seek" type="range" id="seek" min="0" max="100" value="0">
+                <article>
+                    <span class="currenttime">{{currenttime}}</span>
+                    <span class="totaltime">{{totaltime}}</span>
+                    <div class="clear"></div>
+                </article>
+                <h3 class="text-shadow title">{{title}}</h3>
+                <h3 class="text-shadow artist">{{artist}} - {{album}}</h3>
+                <h3 class="text-shadow artist">{{album}}</h3>
+                <h3 class="text-shadow year">{{year}}</h3>
             </div>
         </section>
     </template>
