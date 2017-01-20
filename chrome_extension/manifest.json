@@ -18,5 +18,17 @@
     },
     "chrome_url_overrides": {
         "newtab": "index.html"
-    }
+    },
+    "background": {
+        "scripts": ["scripts/background.js"],
+        "persistent": true
+    },
+    "content_scripts": [{
+        "matches": [
+            "http://*/*",
+            "https://*/*"
+        ],
+        "js": ["scripts/contentScript.js"],
+        "run_at": "document_end"
+    }]
 }

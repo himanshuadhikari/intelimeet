@@ -15,6 +15,7 @@ Chanters("chanters-menu", {
         this.activeMenuItem(event.target, isActive);
     },
     visibility_: function(event) {
+        this.setPosition(event);
         this.visibility = this.visibility === "hidden" ? "visible" : "hidden";
     },
     activeMenuItem: function(target, isActive) {
@@ -24,5 +25,15 @@ Chanters("chanters-menu", {
     hideMenu: function(event) {
         if (event.target.nodeName === "UL" && this.visibility === "visible")
             this.visibility = "hidden";
+    },
+    clearCache: function(event) {
+        this.$.fileupload.value = "";
+        delete localStorage.currentSong;
+        document.querySelector("chanters-player").remove();
+        document.querySelector("chanters-content").appendChild(Chanters.createElement("chanters-player"));
+    },
+    setPosition: function(e) {
+        this.$.menu.style.left = e.pageX + "px";
+        this.$.menu.style.top = e.pageY - 70 + "px";
     }
 });

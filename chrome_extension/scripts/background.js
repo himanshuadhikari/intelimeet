@@ -14,3 +14,7 @@
 //         bounds: { width: 620, height: 500 }
 //     });
 // });
+
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+    alert(request);
+})

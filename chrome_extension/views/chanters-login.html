@@ -11,15 +11,15 @@
         <div id="login" style="display: {{display}}">
             <div class="login-wrap border light-div box-shadow-inset">
                 <div class="dark-div btm-border">
-                    <button class="form-text btn-login txt-shadow" on-click="{{goToPlayer}}" style="pointer:cursor">
+                    <button class="form-text btn-login txt-shadow cursor-pointer" title="Click here to Login" on-click="{{goToPlayer}}">
                         Login
                     </button>
                 </div>
                 <div class="form-wrap btm-border">
-                    <input type="email" value="{{email}}" autofocus class="form-text email" placeholder="Email address">
+                    <input type="email" value="{{email}}" on-keyup="{{login}}" autofocus class="form-text email" placeholder="Email address">
                 </div>
                 <div class="form-wrap">
-                    <input type="text" value="{{userName}}" placeholder="User Name" class="form-text password">
+                    <input type="text" value="{{userName}}" on-keyup="{{login}}" placeholder="User Name" class="form-text password">
                 </div>
             </div>
         </div>

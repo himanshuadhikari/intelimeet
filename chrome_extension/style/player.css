@@ -21,13 +21,12 @@
   }
   
   canvas {
-      position: fixed;
+      position: absolute;
+      left: 0px;
       bottom: 0px;
-      height: 110%;
+      height: 100%;
       width: 100%;
       z-index: -1;
-      top: 45px;
-      /*display: none;*/
   }
   
   #welcome {
@@ -79,13 +78,13 @@
       display: block;
       white-space: nowrap;
       padding: 8px 5px 8px 10px;
+      cursor: pointer;
       z-index: -1;
       /*opacity: 0;*/
   }
   
   #songList li a {
       display: inline-block;
-      cursor: pointer;
       height: inherit;
       /* transition: all 500s ease-in-out; */
       overflow: hidden;
@@ -128,7 +127,7 @@
   }
   
   #songList li .time {
-      left: 190px;
+      right: 35px;
       width: initial;
   }
   

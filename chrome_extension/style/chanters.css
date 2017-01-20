@@ -21,6 +21,10 @@ body {
     width: 100%;
 }
 
+.cursor-pointer {
+    cursor: pointer;
+}
+
 .header,
 .footer {
     height: 40px;
@@ -67,7 +71,7 @@ body {
     width: 100%;
     outline: none;
     font-weight: 300;
-    padding: 0px 0px 0px 20px !important;
+    padding: 0px 20px 0px 20px !important;
     margin: 0px !important;
     border: none !important;
     border-radius: 0px !important;
@@ -180,6 +184,18 @@ chanters-view {
     perspective: 1000px;
 }
 
+.loginFalse .form-text {
+    color: red !important;
+}
+
+.loginFalse input::-webkit-input-placeholder {
+    color: red !important;
+}
+
+.loginfalse .login-wrap {
+    border: 1px solid red !important;
+}
+
 @keyframes shake {
     10%,
     90% {
@@ -276,12 +292,17 @@ chanters-view {
 }
 
 .active {
-    border: 2px solid red !important;
+    background-color: rgba(0, 0, 0, 0.4);
     transition: all .500s ease-in-out;
 }
 
 .active-left {
     border-left: 2px solid red !important;
+    transition: all .500s ease-in-out;
+}
+
+.active-right {
+    border-right: 2px solid red !important;
     transition: all .500s ease-in-out;
 }
 

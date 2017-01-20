@@ -27,11 +27,14 @@
              }.bind(this), 1000);
          }
      },
-
      authanticate: function() {
          if (localStorage.userName && localStorage.email)
              return true;
          else
              return false;
+     },
+     login: function(event) {
+         if (event.keyCode === 13)
+             this.goToPlayer();
      }
  });

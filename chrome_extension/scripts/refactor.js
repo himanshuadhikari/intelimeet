@@ -18,6 +18,25 @@
 
 })(window, document, undefined, function() {
 
+    window.onload = addContextMenu;
+
+    function addContextMenu() {
+        document.body.addEventListener('contextmenu', function(event) {
+            return false;
+        });
+        var needContextMenu = document.querySelectorAll("[chanters-contextmenu]");
+
+        if (!needContextMenu.forEach)
+            needContextMenu = Array.prototype.slice.call(needContextMenu);
+
+        needContextMenu.forEach(function(element) {
+            element.contextmenu = element.getAttribute("chanters-contextmenu");
+            element.addEventListener('contextmenu', function(event) {
+                event.preventDefault();
+                this[this.getAttribute("chanters-contextmenu")](event);
+            });
+        });
+    }
 
     var ChantersConstants = function(key) {
         var chantersConstants = {

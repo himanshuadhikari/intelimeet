@@ -29,8 +29,13 @@ Chanters("chanters-notification", {
     },
     welcomeAnimation: function() {
         if (this.str[this.count]) {
-            this.message += this.str[this.count];
-            this.count++;
+            if (this.reverse === true) {
+                this.message = this.message.substring(0, this.count);
+                this.count--;
+            } else {
+                this.message += this.str[this.count];
+                this.count++;
+            }
             window.requestAnimationFrame(this.welcomeAnimation.bind(this));
         }
     },
@@ -42,8 +47,15 @@ Chanters("chanters-notification", {
 
         this.welcomeAnimation();
 
-         setTimeout(function() {
+        setTimeout(function() {
             this.hide();
         }.bind(this), 10000);
+
+
+        setTimeout(function() {
+            this.count--;
+            this.reverse = true;
+            this.welcomeAnimation()
+        }.bind(this), 9800);
     }
 });

@@ -6,7 +6,9 @@
         context,
         analyser,
         source,
-        ctx;
+        shuffle = false,
+        ctx,
+        previousSong;
 
     var ChantersPlayer = function(mediaObject) {
         this.player = mediaObject.audio;
@@ -29,8 +31,42 @@
             this.audio.currentTime = this.seek.value;
         }.bind(this);
 
+
+        this.audio.onended = this.onended.bind(this);
+        this.onend = mediaObject.onend;
     }
 
+    ChantersPlayer.prototype.onended = function() {
+        animationFlag = false;
+
+        var nextSong = previousSong.nextElementSibling;
+        // this.play.apply(this, [nextSong.file, nextSong]);
+
+        this.onend(nextSong);
+
+    }
+
+
+    ChantersPlayer.prototype.play = function(file, currentSong) {
+        if (previousSong) {
+            previousSong.classList.remove("active-right");
+            previousSong.classList.remove("active");
+        }
+        var _URL = window.URL || window.webkitURL;
+
+
+        this.audio.src = _URL.createObjectURL(file);
+        this.audio.load();
+        this.audio.play();
+        this.audio.volume = 0.7;
+
+        previousSong = currentSong;
+        this.visualizer();
+
+        currentSong.classList.add("active-right");
+        currentSong.classList.add("active");
+
+    }
 
 
     ChantersPlayer.prototype.ontimeupdate = function() {
@@ -69,15 +105,27 @@
             fbc_array = new Uint8Array(analyser.frequencyBinCount);
             analyser.getByteFrequencyData(fbc_array);
             ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-            var grd = ctx.createRadialGradient(75, 50, 5, 90, 60, 100);
-            // light blue
-            grd.addColorStop(0, '#E20604');
-            // dark blue
-            grd.addColorStop(.20, '#FDF629');
-            grd.addColorStop(.40, '#4AF14E');
-            grd.addColorStop(.60, '#08D8EC');
-            grd.addColorStop(.80, '#3231F0');
-            grd.addColorStop(1, '#9426A3');
+
+            // var grd = ctx.createRadialGradient(75, 50, 5, 90, 60, 100);
+            // // light blue
+            // grd.addColorStop(0, '#E20604');
+            // // dark blue
+            // grd.addColorStop(.20, '#FDF629');
+            // grd.addColorStop(.40, '#4AF14E');
+            // grd.addColorStop(.60, '#08D8EC');
+            // grd.addColorStop(.80, '#3231F0');
+            // grd.addColorStop(1, '#9426A3');
+            // ctx.fillStyle = grd;
+
+            var grd = ctx.createLinearGradient(0.000, 150.000, 300.000, 150.000);
+
+            // Add colors
+            grd.addColorStop(0.000, 'rgba(169, 71, 211, 1.000)');
+            grd.addColorStop(0.000, 'rgba(211, 46, 126, 1.000)');
+            grd.addColorStop(0.506, 'rgba(255, 170, 255, 1.000)');
+            grd.addColorStop(1.000, 'rgba(255, 0, 255, 1.000)');
+
+            // Fill with gradient
             ctx.fillStyle = grd;
             var bars = 100;
             for (var i = 0; i < bars; i++) {
@@ -86,6 +134,7 @@
                 bar_height = -(fbc_array[i] / 3);
                 // experiment.style.transform = "scale(" + -bar_height / 10 + ")";
                 ctx.fillRect(bar_x, this.canvas.height, bar_width, bar_height);
+                // ctx.fillRect(0, 0, 300.000, 300.000);
             }
         }
     }

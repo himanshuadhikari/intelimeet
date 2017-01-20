@@ -1,12 +1,22 @@
 Chanters("chanters-background", {
     backgroundImg: localStorage.getItem("backgroundImgUrl") || "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=",
     zIndex: "z-index-center",
+    savePopUp: "z-index-center",
     zIndex_: function(event) {
-        event.target.zIndex = event.target.zIndex === "z-index-top" ? "z-index-center" : "z-index-top";
-        this.zIndex = event.target.zIndex;
+        this.zIndex = this.zIndex === "z-index-top" ? "z-index-center" : "z-index-top";
+        if (this.zIndex === "z-index-top") {
+            this.$.notification.reverse = false;
+            this.showNotification("Hit escape to save...", "showNotification");
+            this.$.notification.show();
+        }
+        // this.savePopUp = this.zIndex === "z-index-pinnacle" ? "z-index-center" : "z-index-pinnacle";
         localStorage.heightToScroll = getComputedStyle(this.$.background).top;
         localStorage.widthToScroll = getComputedStyle(this.$.background).left;
 
+    },
+    showNotification: function(message, whichNotification, imgSrc) {
+        this.$.notification[whichNotification](message, imgSrc);
+        this.$.notification.show();
     },
     onReady: function() {
 

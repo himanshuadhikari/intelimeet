@@ -3,6 +3,7 @@ Chanters("chanters-player", {
     "title": "title",
     "duration": "duration",
     "fileSize": "file size",
+    "previous": null,
     onReady: function() {
         if (localStorage.currentSong) {
             var song = JSON.parse(localStorage.currentSong);
@@ -21,10 +22,14 @@ Chanters("chanters-player", {
 
             this.player = new ChantersPlayer({
                 audio: this.$.audioPlayer,
-                canvas: this.$.analyser,
-                seek: this.seek
+                canvas: this.$.audioPlayer.$.analyser,
+                seek: this.seek,
+                onend: this.onend.bind(this)
             });
         }
+    },
+    onend: function(currentSong) {
+        this.play(currentSong.file, currentSong);
     },
     imageList: [],
     imageList_: function(files) {
@@ -86,8 +91,8 @@ Chanters("chanters-player", {
                             songName.innerHTML = file.title = tag.tags.title || file.name;
                             file.imageUrl = img.src;
 
-                            songName.onclick = function() {
-                                that.play(file);
+                            li.onclick = function() {
+                                that.play(file, li);
                             }
 
                             var artist = Chanters.createElement("span");
@@ -96,6 +101,7 @@ Chanters("chanters-player", {
 
                             li.appendChild(songName);
                             li.appendChild(artist);
+                            li.file = file;
 
                             that.$.songList.appendChild(li);
 
@@ -116,20 +122,14 @@ Chanters("chanters-player", {
         })(files[count]);
         that.$.songList.style.display = "block";
     },
-    play: function(file) {
-        var _URL = window.URL || window.webkitURL;
-
-
-        this.audioPlayer.src = _URL.createObjectURL(file);
-        this.audioPlayer.load();
-        this.audioPlayer.play();
-        this.audioPlayer.volume = 0.7;
+    play: function(file, li) {
+        communicate(file.title);
+        this.player.play(file, li)
         this.$.audioPlayer.totaltime = file.duration;
-
         this.seek.max = this.audioPlayer.duration;
 
         this.saveTabInformation(file);
-        this.player.visualizer();
+
         this.$.audioPlayer.poster = file.imageUrl === location.origin + "/images/music-icon.png" ? "/images/bg-default.jpg" : file.imageUrl;
         this.$.audioPlayer.title = file.title;
 
@@ -152,6 +152,7 @@ Chanters("chanters-player", {
         localStorage.currentSong = JSON.stringify(currentSong);
     },
     showNotification: function(message, whichNotification, imgSrc) {
+        this.$.notification.reverse = false;
         this.$.notification[whichNotification](message, imgSrc);
         this.$.notification.show();
     }

@@ -16,6 +16,7 @@
     <script src="scripts/jquery-ui.min.js"></script>
     <script src="scripts/refactor.js"></script>
     <script src="scripts/background.js"></script>
+    <script src="scripts/contentScript.js"></script>
     <link rel="import" href="views/chanters-header.html">
     <link rel="import" href="views/chanters-background.html">
     <link rel="import" href="views/chanters-view.html">
@@ -26,12 +27,12 @@
 </head>
 
 <body>
-    <chanters-view class = "hidden">
+    <chanters-view class="hidden">
         <chanters-header>
-            <chanters-menu data-visibility="hidden" data-callback="menuItemClicked"></chanters-menu>
         </chanters-header>
         <chanters-background class="container"></chanters-background>
-        <chanters-content data-template="chanters-login.html">
+        <chanters-content chanters-contextmenu="openmenu" data-template="chanters-login.html">
+            <chanters-menu data-visibility="hidden" data-callback="menuItemClicked"></chanters-menu>
         </chanters-content>
         <chanters-footer></chanters-footer>
     </chanters-view>
