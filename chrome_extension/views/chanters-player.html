@@ -3,6 +3,30 @@
         <style>
         @import "../style/chanters.css";
         @import "../style/player.css";
+        /* Let's get this party started */
+        
+        #songList::-webkit-scrollbar {
+            width: 12px;
+        }
+        /* Track */
+        
+        #songList::-webkit-scrollbar-track {
+            /*box-shadow: inset 0 2px 8px rgba(0, 0, 0, .7);*/
+            -webkit-border-radius: 10px;
+            border-radius: 10px;
+        }
+        /* Handle */
+        
+        #songList::-webkit-scrollbar-thumb {
+            -webkit-border-radius: 10px;
+            border-radius: 10px;
+            background-color: rgba(0, 0, 0, 0.6);
+            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+        }
+        
+        #songList::-webkit-scrollbar-thumb:window-inactive {
+            background-color: rgba(0, 0, 0, 0.4);
+        }
         </style>
         <div>
             <chanters-notification id="notification" data-visibility="hidden" data-message="Loading..."></chanters-notification>
@@ -20,10 +44,13 @@
                 <h4>Duration : {{duration}}</h4>
             </div>
             <!-- visible when song is playing and new tab is open -->
-            <chanters-audio id="audioPlayer" data-visibility="hidden" data-poster="/images/bg-default.jpg" data-currenttime="00 : 00" data-totaltime="00 : 00" data-visibility="visible"></chanters-audio>
+            <chanters-audio id="audioPlayer" data-visibility="hidden" data-poster="/images/bg-default.jpg" data-currenttime="00 : 00" data-totaltime="00 : 00"></chanters-audio>
+            <chanters-video id="videoPlayer" data-visibility="hide">
+            </chanters-video>
         </div>
     </template>
     <script src="../scripts/lib/mediaTags.js"></script>
+    <script src="../scripts/lib/fs.js"></script>
     <script src="../scripts/lib/player.js"></script>
     <script src="../scripts/helpers/chanters-player.js"></script>
 </chanters-element>

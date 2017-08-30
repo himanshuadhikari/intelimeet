@@ -78,3 +78,41 @@ working copy of chrome extension {
         "newtab": "index.html"
     }
 }
+
+
+chrome extension latest version
+
+{
+    "manifest_version": 2,
+    "name": "Chanters Player",
+    "version": "1",
+    "icons": {
+        "128": "icon_128.png"
+    },
+    "permissions": [
+        "http://*/*",
+        "https://*/*",
+        "https://www.google.com/*",
+        "http://www.google.com/*"
+    ],
+    "minimum_chrome_version": "28",
+    "chrome_url_overrides": {
+        "newtab": "index.html"
+    },
+    "background": {
+        "scripts": ["scripts/background.js"],
+        "persistent": true
+    },
+    "content_scripts": [{
+        "matches": [
+            "http://*/*",
+            "https://*/*"
+        ],
+        "js": ["scripts/contentScript.js"],
+        "run_at": "document_end"
+    }],
+    "browser_action": {
+        "default_icon": "icon.png",
+        "default_popup": "views/popup.html"
+    }
+}

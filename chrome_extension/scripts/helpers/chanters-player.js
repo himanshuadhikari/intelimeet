@@ -24,7 +24,8 @@ Chanters("chanters-player", {
                 audio: this.$.audioPlayer,
                 canvas: this.$.audioPlayer.$.analyser,
                 seek: this.seek,
-                onend: this.onend.bind(this)
+                onend: this.onend.bind(this),
+                video: this.$.videoPlayer
             });
         }
     },
@@ -42,11 +43,12 @@ Chanters("chanters-player", {
 
         var that = this;
         var count = 0;
-
+        // this.saveToLocal(files);
 
         (function nextIteration(file) {
-            var extension = file.name.split(".").pop();
-            if (extension.toLowerCase() !== "mp3") {
+            var playerFlag = that.getMode(file);
+            // var fileSystem = new fs();
+            if (!playerFlag) {
 
                 if (count < files.length - 1) {
                     count++;
@@ -104,6 +106,11 @@ Chanters("chanters-player", {
                             li.file = file;
 
                             that.$.songList.appendChild(li);
+                            // console.log(file);
+                            // fs.writeFile(file, 'Hello content!', function(err) {
+                            //     if (err) throw err;
+                            //     console.log('Saved!');
+                            // });
 
                             if (count < files.length - 1) {
                                 count++;
@@ -113,8 +120,8 @@ Chanters("chanters-player", {
                     },
                     onError: function(error) {
                         count++;
-                        nextIteration(files[count]);
                         console.log(error, file);
+                        nextIteration(files[count]);
                     }
                 });
 
@@ -123,8 +130,10 @@ Chanters("chanters-player", {
         that.$.songList.style.display = "block";
     },
     play: function(file, li) {
+        this.getMode(file);
+
         communicate(file.title);
-        this.player.play(file, li)
+        this.player.play(file, li, this.player.videoMode);
         this.$.audioPlayer.totaltime = file.duration;
         this.seek.max = this.audioPlayer.duration;
 
@@ -139,7 +148,20 @@ Chanters("chanters-player", {
 
         this.showNotification("Now Playing, " + file.title, "showNotification", file.imageUrl);
         this.$.audioPlayer.setTheme();
-        this.$.audioPlayer.visibility = "visible";
+        if (this.player.videoMode) {
+            this.$.videoPlayer.visibility = "show";
+            this.$.audioPlayer.visibility = "hidden";
+        } else {
+            this.$.audioPlayer.visibility = "visible";
+            this.$.videoPlayer.visibility = "hide";
+        }
+    },
+    getMode: function(file) {
+        var extension = file.name.split(".").pop();
+        var playerFlag = extension.toLowerCase() === "mp3" || extension.toLowerCase() === "mp4" ? true : false;
+        extension.toLowerCase() !== "mp3" ? this.player.videoMode = true : this.player.videoMode = false;
+
+        return playerFlag;
     },
     saveTabInformation: function(file) {
         var currentSong = {
@@ -155,5 +177,18 @@ Chanters("chanters-player", {
         this.$.notification.reverse = false;
         this.$.notification[whichNotification](message, imgSrc);
         this.$.notification.show();
+    },
+    nextSong: function() {
+        console.log("nextSong")
+    },
+    previousSong: function() {
+        console.log("previousSong")
+    },
+    saveToLocal: function(files) {
+       
+
     }
+
+
+
 });

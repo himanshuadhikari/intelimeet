@@ -1,0 +1,29 @@
+<chanters-element>
+    <template>
+        <style>
+        @import "../style/chanters.css";
+        .scrolly,
+        .scrollx {
+            position: absolute;
+        }
+        
+        .scrollx {
+            right: 0;
+        }
+        
+        .scrolly {
+            bottom: 0;
+        }
+        
+        .scrollx #thumb {
+            height: 30px;
+            width: 7px;
+                right: 1px;
+        }
+        </style>
+        <div class="{{scrollposition}} z-index-top dark-div">
+            <div id="thumb" on-mousedown="{{startScroll}}" on-mouseup="{{stopScroll}}"></div>
+        </div>
+    </template>
+    <script src="../scripts/helpers/chanters-scroll.js"></script>
+</chanters-element>

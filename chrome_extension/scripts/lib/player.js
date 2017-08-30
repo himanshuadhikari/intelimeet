@@ -14,6 +14,7 @@
         this.player = mediaObject.audio;
         this.audio = this.player.$.audio;
         this.video = mediaObject.video;
+        this.videoPlayer = this.video.$.video;
         this.seek = mediaObject.seek;
         this.canvas = mediaObject.canvas;
         this.audio.volume = .0;
@@ -47,21 +48,32 @@
     }
 
 
-    ChantersPlayer.prototype.play = function(file, currentSong) {
+    ChantersPlayer.prototype.play = function(file, currentSong, videoMode) {
         if (previousSong) {
             previousSong.classList.remove("active-right");
             previousSong.classList.remove("active");
         }
         var _URL = window.URL || window.webkitURL;
 
-
-        this.audio.src = _URL.createObjectURL(file);
-        this.audio.load();
-        this.audio.play();
-        this.audio.volume = 0.7;
+        if (videoMode) {
+            this.videoPlayer.src = _URL.createObjectURL(file);
+            this.videoPlayer.load();
+            this.videoPlayer.play();
+            this.videoPlayer.volume = 0.7;
+            animationFlag = false;
+            this.audio.pause();
+        } else {
+            this.audio.src = _URL.createObjectURL(file);
+            this.audio.load();
+            this.audio.play();
+            this.audio.volume = 0.7;
+            this.videoPlayer.pause();
+            animationFlag = true;
+            this.visualizer();
+        }
 
         previousSong = currentSong;
-        this.visualizer();
+
 
         currentSong.classList.add("active-right");
         currentSong.classList.add("active");
@@ -83,7 +95,7 @@
         if (this.seek.max === "NaN") {
             this.seek.max = this.audio.duration;
         }
-
+        console.log("ontimeupdate");
         this.seek.value = Math.floor(this.audio.currentTime);
         this.player.currenttime = min + ' : ' + sec;
 

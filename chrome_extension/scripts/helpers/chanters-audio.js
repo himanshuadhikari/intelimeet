@@ -34,5 +34,8 @@ Chanters("chanters-audio", {
             else
                 this.theme = "light";
         }.bind(this));
+    },
+    play: function() {
+        this.$.audio.paused ? this.$.audio.play() : this.$.audio.pause();
     }
 });

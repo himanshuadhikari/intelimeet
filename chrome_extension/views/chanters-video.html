@@ -1,0 +1,21 @@
+<chanters-element>
+    <template>
+        <style>
+        @import "../style/chanters.css";
+        @import "../style/player.css";
+        #video {
+            position: fixed;
+            z-index: 9999;
+            top: 0;
+            height: 100%;
+            width: 81%;
+            left: 19%;
+        }
+        </style>
+        <section>
+            <video id="video" class="{{visibility}}" controls="false">
+            </video>
+        </section>
+    </template>
+    <script src="../scripts/helpers/chanters-video.js"></script>
+</chanters-element>
