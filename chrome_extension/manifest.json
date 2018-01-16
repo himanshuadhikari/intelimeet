@@ -9,7 +9,10 @@
         "http://*/*",
         "https://*/*",
         "https://www.google.com/*",
-        "http://www.google.com/*"
+        "http://www.google.com/*",
+        "https://api.api.ai/v1/",
+        "http://ajax.googleapis.com/",
+        "audioCapture"
     ],
     "minimum_chrome_version": "28",
     "chrome_url_overrides": {

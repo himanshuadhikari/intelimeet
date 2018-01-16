@@ -4,6 +4,7 @@ Chanters("chanters-audio", {
     album: "N/A",
     year: "N/A",
     theme: "dark",
+    inheritParent: true,
     onReady: function() {
         $(this.$.audioContainer).draggable({
             containment: "parent"
@@ -37,5 +38,9 @@ Chanters("chanters-audio", {
     },
     play: function() {
         this.$.audio.paused ? this.$.audio.play() : this.$.audio.pause();
+        var host = this.getRootNode().host;
+
+        if (host && host.playPause)
+            host.playPause(!this.$.audio.paused);
     }
 });

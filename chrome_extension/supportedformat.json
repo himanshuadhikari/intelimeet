@@ -116,3 +116,36 @@ chrome extension latest version
         "default_popup": "views/popup.html"
     }
 }
+
+
+saveToLocal: function(files) {
+    window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
+
+    window.webkitStorageInfo.requestQuota(PERSISTENT, 1024 * 1024, function(grantedBytes) {
+        window.requestFileSystem(window.PERSISTENT, 1024 * 1024, function(fs) {
+
+            for (var i = 0, file; file = files[i]; ++i) {
+
+                (function(f) {
+                    fs.root.getFile(f.name, {
+                        create: true
+                    }, function(fileEntry) {
+                        console.log(f.name);
+
+                        fileEntry.createWriter(function(fileWriter) {
+                            fileWriter.write(f);
+                        }, errorHandler);
+
+                    }, errorHandler);
+                })(file);
+
+            }
+        }, errorHandler)
+
+    }, errorHandler);
+
+    function errorHandler(e) {
+        console.log(e);
+    }
+
+}

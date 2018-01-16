@@ -26,15 +26,21 @@
         return Array.prototype.slice.call(list || [], 0);
     }
 
-
-
-
-
-
     function errorHandler(e) {
-        console.log(e);
+        throw e.message;
     }
 
+    fileSystem.prototype.createFile = function(file, callback) {
+        fs.getFile(file.name, {
+            create: true
+        }, function(fileEntry) {
+
+            fileEntry.createWriter(function(fileWriter) {
+                fileWriter.write(file);
+            }, errorHandler);
+
+        }, errorHandler);
+    }
 
 
     fileSystem.prototype.readFile = function(fileName, callback) {
@@ -55,7 +61,7 @@
 
     }
 
-    fileSystem.prototype.readDirectory = function(fileName, callback) {
+    fileSystem.prototype.readFolder = function(folderName, callback) {
         var dirReader = fs.createReader();
         var entries = [];
 
@@ -75,11 +81,51 @@
 
     }
 
-    fileSystem.prototype.writeFile = function(fileName, callback) {
-        var file = path;
-        var error;
-        if (callback)
-            callback(error, file)
+    fileSystem.prototype.createFolder = function(path) {
+        var path;
+
+
+        var createDirectory = function(path, rootDirEntry) {
+
+            if (typeof path === "string")
+                path = path.split("/");
+
+            if (path[0] === "." || path[0] === "")
+                path.splice(1);
+
+            if (!path.length)
+                return;
+
+            rootDirEntry.getDirectory(path[0], { create: true }, function(dirEntry) {
+                if (path.length)
+                    createDirectory(path.splice(1), dirEntry);
+            }, errorHandler);
+        }
+
+        createDirectory(path, fs);
+
     }
+
+    fileSystem.prototype.deleteFolder = function(path) {
+        fs.getDirectory(path, {}, function(dirEntry) {
+            dirEntry.remove(function() {
+                console.log(path + ' Directory removed.');
+            }, errorHandler);
+        }, errorHandler);
+    }
+
+    fileSystem.prototype.deleteFile = function(fileName) {
+        fs.getFile(fileName, { create: false }, function(fileEntry) {
+            fileEntry.remove(function() {
+                console.log(fileName + " has been removed")
+            }, errorHandler)
+        }, errorHandler);
+    }
+
+
+
+
+
+
     return fileSystem;
 })

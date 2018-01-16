@@ -47,6 +47,11 @@
 
     }
 
+    ChantersPlayer.prototype.EditAnimationFlag = function(isPlaying) {
+        animationFlag = isPlaying ? true : false;
+        this.frameLooper();
+    }
+
 
     ChantersPlayer.prototype.play = function(file, currentSong, videoMode) {
         if (previousSong) {
@@ -95,7 +100,6 @@
         if (this.seek.max === "NaN") {
             this.seek.max = this.audio.duration;
         }
-        console.log("ontimeupdate");
         this.seek.value = Math.floor(this.audio.currentTime);
         this.player.currenttime = min + ' : ' + sec;
 

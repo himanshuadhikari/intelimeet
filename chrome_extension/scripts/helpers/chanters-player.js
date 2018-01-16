@@ -4,6 +4,7 @@ Chanters("chanters-player", {
     "duration": "duration",
     "fileSize": "file size",
     "previous": null,
+    supportedExtension: ['mp3', 'mp4', 'mkv'],
     onReady: function() {
         if (localStorage.currentSong) {
             var song = JSON.parse(localStorage.currentSong);
@@ -57,77 +58,81 @@ Chanters("chanters-player", {
             } else
                 jsmediatags.read(file, {
                     onSuccess: function(tag) {
-                        var li = Chanters.createElement("li");
-                        var dataUrl;
-                        var div = Chanters.createElement("div");
-                        var img = Chanters.createElement("img");
-                        if (tag.tags.picture) {
-                            var image = tag.tags.picture;
-
-                            var base64String = "";
-                            for (var i = 0; i < image.data.length; i++) {
-                                base64String += String.fromCharCode(image.data[i]);
-                            }
-                            dataUrl = "data:" + image.format + ";base64," + window.btoa(base64String);
-                            img.src = dataUrl;
-                        } else {
-                            img.src = "/images/music-icon.png";
-                        }
-                        div.appendChild(img);
-                        li.appendChild(div);
-                        file.album = tag.tags.album;
-                        file.artist = tag.tags.artist;
-                        file.year = tag.tags.year;
-
-
-
-                        var songDuration = Chanters.createElement("span");
-                        that.player.getAudioDuration(file, function(time) {
-                            file.duration = time;
-                            songDuration.innerHTML = time;
-                            li.appendChild(songDuration);
-                            songDuration.classList.add("time");
-
-
-                            var songName = Chanters.createElement("a");
-                            songName.innerHTML = file.title = tag.tags.title || file.name;
-                            file.imageUrl = img.src;
-
-                            li.onclick = function() {
-                                that.play(file, li);
-                            }
-
-                            var artist = Chanters.createElement("span");
-                            artist.innerHTML = tag.tags.artist || "N/A";
-                            artist.classList.add("artist");
-
-                            li.appendChild(songName);
-                            li.appendChild(artist);
-                            li.file = file;
-
-                            that.$.songList.appendChild(li);
-                            // console.log(file);
-                            // fs.writeFile(file, 'Hello content!', function(err) {
-                            //     if (err) throw err;
-                            //     console.log('Saved!');
-                            // });
-
-                            if (count < files.length - 1) {
-                                count++;
-                                nextIteration(files[count]);
-                            }
-                        });
+                        createList(tag, file, nextIteration);
                     },
                     onError: function(error) {
                         count++;
                         console.log(error, file);
-                        nextIteration(files[count]);
+                        createList({}, file, nextIteration);
                     }
                 });
 
 
         })(files[count]);
         that.$.songList.style.display = "block";
+
+
+        function createList(tag, file, nextIteration) {
+            var li = Chanters.createElement("li");
+            var dataUrl;
+            var div = Chanters.createElement("div");
+            var img = Chanters.createElement("img");
+            if (tag && tag.tags && tag.tags.picture) {
+                var image = tag.tags.picture;
+
+                var base64String = "";
+                for (var i = 0; i < image.data.length; i++) {
+                    base64String += String.fromCharCode(image.data[i]);
+                }
+                dataUrl = "data:" + image.format + ";base64," + window.btoa(base64String);
+                img.src = dataUrl;
+
+                file.album = tag.tags.album;
+                file.artist = tag.tags.artist;
+                file.year = tag.tags.year;
+            } else {
+                img.src = "/images/music-icon.png";
+            }
+            div.appendChild(img);
+            li.appendChild(div);
+
+            var songDuration = Chanters.createElement("span");
+            that.player.getAudioDuration(file, function(time) {
+                file.duration = time;
+                songDuration.innerHTML = time;
+                li.appendChild(songDuration);
+                songDuration.classList.add("time");
+
+
+                var songName = Chanters.createElement("a");
+                songName.innerHTML = file.title = tag && tag.tags && tag.tags.title || file.name;
+                file.imageUrl = img.src;
+
+                li.onclick = function() {
+                    that.play(file, li);
+                }
+
+                var artist = Chanters.createElement("span");
+                artist.innerHTML = tag && tag.tags && tag.tags.artist || "N/A";
+                artist.classList.add("artist");
+
+                li.appendChild(songName);
+                li.appendChild(artist);
+                li.file = file;
+
+                that.$.songList.appendChild(li);
+                // console.log(file);
+                // fs.writeFile(file, 'Hello content!', function(err) {
+                //     if (err) throw err;
+                //     console.log('Saved!');
+                // });
+
+                if (count < files.length - 1) {
+                    count++;
+                    nextIteration(files[count]);
+                }
+            });
+        }
     },
     play: function(file, li) {
         this.getMode(file);
@@ -158,7 +163,7 @@ Chanters("chanters-player", {
     },
     getMode: function(file) {
         var extension = file.name.split(".").pop();
-        var playerFlag = extension.toLowerCase() === "mp3" || extension.toLowerCase() === "mp4" ? true : false;
+        var playerFlag = this.supportedExtension.indexOf(extension) !== -1 ? true : false;
         extension.toLowerCase() !== "mp3" ? this.player.videoMode = true : this.player.videoMode = false;
 
         return playerFlag;
@@ -184,11 +189,8 @@ Chanters("chanters-player", {
     previousSong: function() {
         console.log("previousSong")
     },
-    saveToLocal: function(files) {
-       
-
+    saveToLocal: function(files) {},
+    playPause: function(isPlaying) {
+        this.player.EditAnimationFlag(isPlaying);
     }
-
-
-
 });
