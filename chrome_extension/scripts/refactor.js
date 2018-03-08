@@ -429,7 +429,7 @@
                     return;
 
 
-                change.templateInstance = this.templateInstance[key] || templateInstance;
+                change.templateInstance = this.templateInstance && this.templateInstance[key] || templateInstance;
                 clone[key] = val;
 
 

@@ -156,16 +156,13 @@
     }
 
     ChantersPlayer.prototype.getAudioDuration = function(file, callback) {
+        console.log(file);
         var audio = new Audio();
         var _URL = window.URL || window.webkitURL;
         audio.src = _URL.createObjectURL(file);
         audio.load();
-        audio.play();
         audio.volume = .0;
-
-
-        audio.oncanplaythrough = function() {
-
+        audio.play().then(function() {
             var min = Math.floor(audio.duration / 60);
             var sec = Math.floor(audio.duration % 60);
             if (sec < 10) {
@@ -176,8 +173,7 @@
             }
             audio.pause();
             callback(min + " : " + sec);
-
-        }.bind(this);
+        })
     }
 
     return ChantersPlayer;

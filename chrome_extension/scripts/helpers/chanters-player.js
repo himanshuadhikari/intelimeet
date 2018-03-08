@@ -33,6 +33,9 @@ Chanters("chanters-player", {
     onend: function(currentSong) {
         this.play(currentSong.file, currentSong);
     },
+    calculateProgress: function(totalNumber, current) {
+        return Math.ceil((current / totalNumber) * 100);
+    },
     imageList: [],
     imageList_: function(files) {
         this.createList(files);
@@ -49,6 +52,13 @@ Chanters("chanters-player", {
         (function nextIteration(file) {
             var playerFlag = that.getMode(file);
             // var fileSystem = new fs();
+
+            // that.$.progressbar.progress = that.calculateProgress(files.length, count);
+
+            // if (!count)
+            //     that.$.progressbar.message = "progressbar"
+            // that.this.showNotification("Welcome to Chanters...", "showWelcomeMessage");
+
             if (!playerFlag) {
 
                 if (count < files.length - 1) {
@@ -62,7 +72,6 @@ Chanters("chanters-player", {
                     },
                     onError: function(error) {
                         count++;
-                        console.log(error, file);
                         createList({}, file, nextIteration);
                     }
                 });

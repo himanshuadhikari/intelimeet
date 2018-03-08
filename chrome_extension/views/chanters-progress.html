@@ -1,0 +1,27 @@
+<chanters-element>
+    <template>
+        <style>
+        @import "../style/chanters.css";
+        @import "../style/chanters-progress.css";
+        #message {
+            color: white;
+            padding: 15px 40px;
+            border-radius: 5px;
+        }
+        </style>
+        <section>
+            <div class="center">{{progress}}%</div>
+            <div class="progress" style="left: {{progressLeft}}">
+                <ul>
+                    <template repeat="item in items">
+                        <li class="{{item.class}}">{{item.index}}</li>
+                    </template>
+                </ul>
+            </div>
+            <div class="buttons" style="position: relative;">
+                <chanters-notification id="notification" data-isbtnclosevisible="none" data-isimagevisible="none" data-right="584" data-bottom="-80" data-visibility="visible" data-message="Loading..."></chanters-notification>
+            </div>
+        </section>
+    </template>
+    <script src="../scripts/helpers/chanters-progress.js"></script>
+</chanters-element>
