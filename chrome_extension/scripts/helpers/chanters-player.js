@@ -23,7 +23,7 @@ Chanters("chanters-player", {
 
             this.player = new ChantersPlayer({
                 audio: this.$.audioPlayer,
-                canvas: this.$.audioPlayer.$.analyser,
+                canvas: this.$.audioPlayer.$.analyser || document.querySelector("::shadow canvas"),
                 seek: this.seek,
                 onend: this.onend.bind(this),
                 video: this.$.videoPlayer
@@ -154,7 +154,7 @@ Chanters("chanters-player", {
         this.saveTabInformation(file);
 
         this.$.audioPlayer.poster = file.imageUrl === location.origin + "/images/music-icon.png" ? "/images/bg-default.jpg" : file.imageUrl;
-        this.$.audioPlayer.title = file.title;
+        this.$.audioPlayer.setAttribute("title", file.title);
 
         this.$.audioPlayer.album = file.album;
         this.$.audioPlayer.artist = file.artist;

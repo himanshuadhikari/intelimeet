@@ -113,6 +113,13 @@
                  newValue: this.files
              });
          };
+     },
+     customizeBackground: function(event) {
+         this.parent.communicate({
+             element: "chanters-background",
+             effectedProperty: "customizeBackground",
+             newValue: event
+         });
      }
 
  });

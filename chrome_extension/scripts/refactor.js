@@ -280,10 +280,10 @@
                                 // todo :: refactor this code/logic
                                 var element = this.querySelector(options.element);
                                 if (element && element[options.effectedProperty])
-                                // element[options.effectedProperty] = options.newValue;
+                                    // element[options.effectedProperty] = options.newValue;
 
                                     if (element[options.effectedProperty + "_"])
-                                    element[options.effectedProperty + "_"](options.newValue);
+                                        element[options.effectedProperty + "_"](options.newValue);
                             }
                     }
 
@@ -405,8 +405,36 @@
 
                 });
             })
-        }
+        } else if (nodeObject.Repeater && n.nodeName === "TEMPLATE") {
+            var repeaterObject = nodeObject.Repeater[0];
+            var check = utils.__checkValuesFromKeys__(webComponent, repeaterObject.targetArrayName, that.mapper);
 
+            // if (check) {
+            //     Object.defineProperty(webComponent, repeaterObject.targetArrayName, {
+            //         get: function() {
+            //             return that.prototype[repeaterObject.targetArrayName];
+            //         },
+            //         set: function(val) {
+            //             if (isArray(val)) {
+            //                 var key = repeaterObject.targetArrayName;
+            //                 var change = that.__apply__(that.prototype, key, val);
+            //                 if (!change)
+            //                     return;
+
+            //                 change.templateInstance = this.templateInstance && this.templateInstance[key] || templateInstance;
+            //                 that.prototype[repeaterObject.targetArrayName] = val;
+            //             } else
+            //                 console.warn("array type variables cann't accept other values")
+
+
+            //             // that.__digest__(change);
+
+            //         },
+            //         enumerable: true
+            //     });
+            // }
+
+        }
 
 
     }
@@ -834,7 +862,7 @@
                 bindingObject.targetArrayName = keys[0];
             }
 
-            bindingObject.targetArray = getValuesFromKeys(keys, prototype)[0];
+            bindingObject.targetArray = getValuesFromKeys(keys, prototype, nodeObject, n, webComponent)[0];
 
             return bindingObject;
 
@@ -901,6 +929,7 @@
 
                     if (isString(o[k]) || isNumber(o[k]) || typeof o[k] === "boolean")
                         mapper[k] = true;
+
 
 
                     if (isObject(o[k])) {

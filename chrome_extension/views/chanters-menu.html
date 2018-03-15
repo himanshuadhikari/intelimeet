@@ -10,13 +10,13 @@
             width: 200px;
             border-radius: 5px;
         }
-        
+
         #menu li {
             display: block;
             padding: 10px;
             cursor: pointer;
         }
-        
+
         #menu li:hover {
             background: red;
         }
@@ -38,6 +38,9 @@
             <input autocomplete="" type="file" id="fileupload" multiple class="hidden" style="display:none">
             <li on-click="{{clearCache}}">
                 Remove Cache
+            </li>
+            <li on-click="{{itemClick(customizeBackground, true)}}">
+                Customize Background
             </li>
         </ul>
     </template>

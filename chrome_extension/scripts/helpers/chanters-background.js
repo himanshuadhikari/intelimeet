@@ -2,11 +2,11 @@ Chanters("chanters-background", {
     backgroundImg: localStorage.getItem("backgroundImgUrl") || "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=",
     zIndex: "z-index-center",
     savePopUp: "z-index-center",
-    zIndex_: function(event) {
+    zIndex_: function(event, message) {
         this.zIndex = this.zIndex === "z-index-top" ? "z-index-center" : "z-index-top";
         if (this.zIndex === "z-index-top") {
             this.$.notification.reverse = false;
-            this.showNotification("Hit escape to save...", "showNotification");
+            this.showNotification(message || "Hit escape to save...", "showNotification");
             this.$.notification.show();
         }
         // this.savePopUp = this.zIndex === "z-index-pinnacle" ? "z-index-center" : "z-index-pinnacle";
@@ -75,5 +75,20 @@ Chanters("chanters-background", {
         var _URL = window.URL || window.webkitURL,
             blobURL = _URL.createObjectURL(file);
         return blobURL;
-    }
+    },
+    customizeBackground: [],
+    customizeBackground_: function(event) {
+        this.zIndex_(event, "You can select one ore more backgrounds...");
+
+        this.$.backgroundContainer.style.display = "block";
+
+
+    },
+    images: [
+        { name: "N/A", url: "./images/birds-280a.jpg", selected: false },
+        { name: "N/A", url: "./images/planes-231a.jpg", selected: false },
+        { name: "N/A", url: "./images/planes-236a (2).jpg", selected: false },
+        { name: "N/A", url: "./images/beaches-154a.jpg", selected: false },
+        { name: "N/A", url: "./images/planes-240a.jpg", selected: false }
+    ]
 });

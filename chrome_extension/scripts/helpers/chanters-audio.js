@@ -3,13 +3,13 @@ Chanters("chanters-audio", {
     artist: "N/A",
     album: "N/A",
     year: "N/A",
-    theme: "dark",
+    theme: "light",
     inheritParent: true,
     onReady: function() {
         $(this.$.audioContainer).draggable({
             containment: "parent"
         });
-        this.setTheme();
+        // this.setTheme();
     },
     show: function() {
         this.delay("visible");

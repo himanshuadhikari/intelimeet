@@ -108,6 +108,9 @@
 
 
     ChantersPlayer.prototype.visualizer = function() {
+        if (!this.canvas)
+            return;
+
         ctx = this.canvas.getContext('2d');
         analyser.connect(context.destination);
         animationFlag = true;
