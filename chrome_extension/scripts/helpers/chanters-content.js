@@ -88,10 +88,10 @@
          });
      },
      changeBackground: function(event) {
-         event.target.nextElementSibling.click();
+         event.currentTarget.nextElementSibling.click();
          var that = this;
-         event.target.nextElementSibling.onchange = function(event) {
-             var imageList = event.target.files;
+         event.currentTarget.nextElementSibling.onchange = function(event) {
+             var imageList = event.currentTarget.files;
 
              that.parent.communicate({
                  element: "chanters-background",
@@ -104,9 +104,9 @@
          this.mode_(this.mode === "Night Mode" ? "Day Mode" : "Night Mode");
      },
      createList: function(event, item) {
-         event.target.nextElementSibling.click();
+         event.currentTarget.nextElementSibling.click();
          var that = this;
-         event.target.nextElementSibling.onchange = function(event) {
+         event.currentTarget.nextElementSibling.onchange = function(event) {
              that.parent.communicate({
                  element: "chanters-player",
                  effectedProperty: "imageList",
@@ -119,6 +119,20 @@
              element: "chanters-background",
              effectedProperty: "customizeBackground",
              newValue: event
+         });
+     },
+     favSongs: function(event) {
+         this.parent.communicate.call(this, {
+             element: "chanters-player",
+             effectedProperty: "showFavouriteSongs",
+             newValue: "favSongs"
+         });
+     },
+     allSongs: function(event) {
+         this.parent.communicate.call(this, {
+             element: "chanters-player",
+             effectedProperty: "showFavouriteSongs",
+             newValue: "allSongs"
          });
      }
 

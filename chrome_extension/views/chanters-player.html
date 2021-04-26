@@ -5,26 +5,30 @@
         @import "../style/player.css";
         /* Let's get this party started */
 
-        #songList::-webkit-scrollbar {
+        #songList::-webkit-scrollbar,
+        #favSongs::-webkit-scrollbar {
             width: 12px;
         }
         /* Track */
 
-        #songList::-webkit-scrollbar-track {
+        #songList::-webkit-scrollbar-track,
+        #favSongs::-webkit-scrollbar-track {
             /*box-shadow: inset 0 2px 8px rgba(0, 0, 0, .7);*/
             -webkit-border-radius: 10px;
             border-radius: 10px;
         }
         /* Handle */
 
-        #songList::-webkit-scrollbar-thumb {
+        #songList::-webkit-scrollbar-thumb,
+        #favSongs::-webkit-scrollbar-thumb {
             -webkit-border-radius: 10px;
             border-radius: 10px;
             background-color: rgba(0, 0, 0, 0.6);
             -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
         }
 
-        #songList::-webkit-scrollbar-thumb:window-inactive {
+        #songList::-webkit-scrollbar-thumb:window-inactive,
+        #favSongs::-webkit-scrollbar-thumb:window-inactive {
             background-color: rgba(0, 0, 0, 0.4);
         }
         </style>
@@ -34,7 +38,7 @@
             <div>
                 <ul id="songList" class="border box-shadow-inset chanters-player">
                 </ul>
-                <div></div>
+                <ul id="favSongs" class="border box-shadow-inset z-index-pinnacle"></ul>
             </div>
             <!-- visible when song is playing and new tab is open -->
             <div id="wall" class="dark-div border">
@@ -45,7 +49,7 @@
                 <h4>Duration : {{duration}}</h4>
             </div>
             <!-- visible when song is playing and new tab is open -->
-            <chanters-audio id="audioPlayer" data-visibility="hidden" data-poster="/images/bg-default.jpg" data-currenttime="00 : 00" data-totaltime="00 : 00"></chanters-audio>
+            <chanters-audio id="audioPlayer" data-visibility="hide" data-poster="/images/bg-default.jpg" data-currenttime="00 : 00" data-totaltime="00 : 00"></chanters-audio>
             <chanters-video id="videoPlayer" data-visibility="hide">
             </chanters-video>
         </div>

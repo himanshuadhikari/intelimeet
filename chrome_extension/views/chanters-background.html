@@ -2,6 +2,8 @@
     <template>
         <style>
         @import "style/chanters.css";
+        /*@import "../fontawesome-free-5.0.9/web-fonts-with-css/css/fontawesome.min.css";*/
+        /*@import "../fontawesome-free-5.0.9/web-fonts-with-css/css/fa-brands.min.css";*/
          :host {
             overflow: hidden;
             position: absolute;
@@ -18,23 +20,16 @@
 
         #backgroundContainer div {
             position: relative;
-            width: 50%;
+            width: 94%;
             margin: 0 auto;
             color: white;
-            padding: 20px;
         }
         </style>
-        <chanters-notification id="notification" data-right="0" data-bottom="0" data-visibility="hidden" data-message="Loading..."></chanters-notification>
+        <chanters-notification id="notification" data-right="0" data-bottom="0" data-visibility="hide" data-message="Loading..."></chanters-notification>
         <img id="background" class="{{zIndex}}" src="{{backgroundImg}}">
-        <section id="backgroundContainer" class="fixed-top z-index-pinnacle dark-div" style="display: none;top:50px">
-            <div class="dark-div">
-                <ul>
-                    <template repeat="image in images">
-                        <li>{{image.url}}</li>
-                         <li>{{image.name}}</li>
-                        <input type="text" value="{{image.url}}">
-                    </template>
-                </ul>
+        <section id="backgroundContainer" class="fixed-top z-index-pinnacle" style="display: none;top:50px">
+            <div class="">
+                <directory-structure></directory-structure>
             </div>
         </section>
     </template>

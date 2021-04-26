@@ -1123,6 +1123,7 @@
 });
 
 
+// Use this code for setting Getters and Setters in webComponent Two-way binding
 // var arrayChangeHandler = {
 //   get: function(target, property) {
 //     console.log('getting ' + property + ' for ' + target);

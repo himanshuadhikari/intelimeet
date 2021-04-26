@@ -1,0 +1,27 @@
+{
+  "name": "chanters",
+  "description": "music player",
+  "main": "index.html",
+  "authors": [
+    "himanshu adhikari"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "chanters",
+    "player",
+    "js",
+    "framework"
+  ],
+  "homepage": "https://github.com/himanshuadhikari/intelimeet",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "components-font-awesome": "^4.7.0"
+  }
+}

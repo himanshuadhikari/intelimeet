@@ -16,6 +16,13 @@ Chanters("chanters-notification", {
         setTimeout(function() {
             this.visibility = visibility;
         }.bind(this));
+
+        if (mode === "hidden") {
+            console.log(mode);
+            setTimeout(function() {
+                this.$.container.style.display = "none";
+            }.bind(this), 1000);
+        }
     },
     showWelcomeMessage: function(message) {
         setTimeout(function() {

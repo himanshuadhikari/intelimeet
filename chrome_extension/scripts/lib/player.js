@@ -43,7 +43,8 @@
         var nextSong = previousSong.nextElementSibling;
         // this.play.apply(this, [nextSong.file, nextSong]);
 
-        this.onend(nextSong);
+        if (nextSong)
+            this.onend(nextSong);
 
     }
 
@@ -159,7 +160,6 @@
     }
 
     ChantersPlayer.prototype.getAudioDuration = function(file, callback) {
-        console.log(file);
         var audio = new Audio();
         var _URL = window.URL || window.webkitURL;
         audio.src = _URL.createObjectURL(file);

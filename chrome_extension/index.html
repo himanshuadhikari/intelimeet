@@ -12,11 +12,15 @@
         padding: 0;
     }
     </style>
+    <script src="scripts/fs.js"></script>
     <script src="scripts/jquery-3.0.0.min.js"></script>
     <script src="scripts/jquery-ui.min.js"></script>
     <script src="scripts/refactor.js"></script>
     <script src="scripts/background.js"></script>
     <script src="scripts/contentScript.js"></script>
+    <!-- <link rel="stylesheet" type="text/css" href="fontawesome-free-5.0.9/web-fonts-with-css/css/fontawesome.min.css"> -->
+    <link rel="stylesheet" type="text/css" href="fontawesome-free-5.0.9/svg-with-js/js/fontawesome-all.js">
+    <!-- <link rel="stylesheet" type="text/css" href="fontawesome-free-5.0.9/web-fonts-with-css/css/fa-brands.min.css"> -->
     <link rel="import" href="views/chanters-header.html">
     <link rel="import" href="views/chanters-background.html">
     <link rel="import" href="views/chanters-view.html">
@@ -27,6 +31,7 @@
     <link rel="import" href="views/chanters-video.html">
     <link rel="import" href="views/chanters-scroll.html">
     <link rel="import" href="views/chanters-progress.html">
+    <link rel="import" href="views/directory-structure.html">
 </head>
 
 <body>
@@ -35,7 +40,8 @@
         </chanters-header>
         <chanters-background class="container"></chanters-background>
         <chanters-content chanters-contextmenu="openmenu" data-template="chanters-login.html">
-            <chanters-menu data-visibility="hidden" data-callback="menuItemClicked"></chanters-menu>
+            <chanters-menu data-visibility="hide" data-callback="menuItemClicked">
+            </chanters-menu>
         </chanters-content>
         <chanters-footer></chanters-footer>
     </chanters-view>

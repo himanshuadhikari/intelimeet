@@ -12,19 +12,21 @@ Chanters("chanters-menu", {
         if (this.callback)
             this.parent[this.callback](event, itemName);
 
-        this.activeMenuItem(event.target, isActive);
+        this.activeMenuItem(event.currentTarget, isActive);
     },
     visibility_: function(event) {
         this.setPosition(event);
-        this.visibility = this.visibility === "hidden" ? "visible" : "hidden";
+        this.visibility = this.visibility === "hide" ? "show" : "hide";
     },
     activeMenuItem: function(target, isActive) {
         if (isActive === "true")
             target.classList.contains("active-left") === true ? target.classList.remove("active-left") : target.classList.add("active-left");
     },
     hideMenu: function(event) {
-        if (event.target.nodeName === "UL" && this.visibility === "visible")
-            this.visibility = "hidden";
+        if (event.target.nodeName === "UL" && this.visibility === "show") {
+            this.visibility = "hide";
+            this.$.submenu.style.display = "none";
+        }
     },
     clearCache: function(event) {
         this.$.fileupload.value = "";
@@ -35,5 +37,11 @@ Chanters("chanters-menu", {
     setPosition: function(e) {
         this.$.menu.style.left = e.pageX + "px";
         this.$.menu.style.top = e.pageY - 70 + "px";
+    },
+    showSubMenu: function(e) {
+        this.$.submenu.style.display = "block";
+    },
+    hideSubMenu: function() {
+        this.$.submenu.style.display = "none";
     }
 });

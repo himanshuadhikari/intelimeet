@@ -15,32 +15,53 @@
             display: block;
             padding: 10px;
             cursor: pointer;
+            position: relative;
         }
 
         #menu li:hover {
             background: red;
         }
+
+        #submenu {
+            position: absolute;
+            width: 100%;
+            left: 200px;
+            top: 0px;
+            display: none;
+        }
         </style>
         <ul id="menu" on-mouseleave="{{hideMenu}}" class="border dark-div absolute z-index-pinnacle box-shadow {{visibility}}">
             <li on-click="{{itemClick(changeBackground, false)}}">
-                Change BackGround
+                <span>Change BackGround</span>
             </li>
             <input autocomplete="" accept=".jpg, .jpeg, .png, .JPG, .JPEG, .PNG" type="file" id="background" multiple style="display:none">
             <li on-click="{{itemClick(resizeBackground, true)}}">
-                Resize BackGround
+                <span>Resize BackGround</span>
             </li>
             <li on-click="{{itemClick(changeMode, true)}}">
-                Mode
+                <span>Mode</span>
             </li>
             <li on-click="{{itemClick(createList,false)}}">
-                Add Songs
+                <span>Add Songs</span>
             </li>
             <input autocomplete="" type="file" id="fileupload" multiple class="hidden" style="display:none">
             <li on-click="{{clearCache}}">
-                Remove Cache
+                <span>Remove Cache</span>
             </li>
             <li on-click="{{itemClick(customizeBackground, true)}}">
-                Customize Background
+                <span>Customize Background</span>
+            </li>
+            <!-- <li on-click="{{itemClick(favSongs, true)}}"> -->
+            <li on-mouseover="{{showSubMenu}}" on-mouseout="{{hideSubMenu}}">
+                <span>Playlist</span>
+                <ul id="submenu" class="border dark-div box-shadow">
+                    <li on-click="{{itemClick(allSongs, true)}}">
+                        <span>All Songs</span>
+                    </li>
+                    <li on-click="{{itemClick(favSongs, true)}}">
+                        <span>Favourite Songs</span>
+                    </li>
+                </ul>
             </li>
         </ul>
     </template>

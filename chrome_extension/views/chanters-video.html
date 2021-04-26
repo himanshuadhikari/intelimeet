@@ -6,14 +6,22 @@
         #video {
             position: fixed;
             z-index: 9999;
-            top: 0;
-            height: 100%;
+            top: 40px;
+            height: 94%;
             width: 81%;
+            background: black;
+        }
+
+        .right {
             left: 19%;
+        }
+
+        .left {
+            left: 0%;
         }
         </style>
         <section>
-            <video id="video" class="{{visibility}}" controls="false">
+            <video id="video" class="{{visibility}} z-index-center {{position}}" controls="false">
             </video>
         </section>
     </template>
